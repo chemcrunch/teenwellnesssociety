@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Teen Wellness Society — Habit Tracker</title>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -37,8 +38,8 @@
 
   /* ===== TOP BAR ===== */
   .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:16px 18px; max-width:880px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;
+    padding:12px 18px; max-width:880px; margin:0 auto;
   }
   .brand{display:flex; align-items:center; gap:10px;}
   .brand .mark{
@@ -153,7 +154,21 @@
   }
   textarea:focus, input[type=text]:focus{outline:none; border-color:var(--teal);}
   .day-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin:16px 0;}
-  @media (max-width:480px){.day-grid{grid-template-columns:repeat(5,1fr);}}
+  @media (max-width:480px){
+    .day-grid{grid-template-columns:repeat(5,1fr);}
+    .topbar{padding:10px 14px;}
+    .brand .name{font-size:14px;}
+    .brand .name small{font-size:10px;}
+    .whoami{font-size:11px;}
+    nav.tabs{padding:4px 10px 14px; gap:5px;}
+    nav.tabs button{padding:7px 10px; font-size:12px;}
+    .card{padding:16px 14px; border-radius:16px;}
+    .stamp-item{padding:10px 12px; gap:10px;}
+    .stamp-item .stamp-icon{font-size:20px;}
+    .tier-banner{padding:14px 12px;}
+    .app{padding:0 12px 90px;}
+    h2{font-size:20px;}
+  }
   .day{
     aspect-ratio:1; border-radius:10px; border:2px solid var(--line); background:var(--paper);
     display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600;
@@ -166,6 +181,65 @@
   .day.done::after{content:"✓"; position:absolute; font-size:14px;}
   .day .num{position:absolute; top:3px; left:5px; font-size:8px; opacity:.7;}
   .day.done .num{display:none;}
+  .day.has-note::before{content:"📝"; position:absolute; bottom:2px; right:2px; font-size:7px; opacity:.8;}
+
+  /* ===== GAMES ===== */
+  .games-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px;}
+  @media(max-width:480px){.games-grid{grid-template-columns:1fr;}}
+  .game-card{background:var(--paper);border-radius:18px;border:2px solid var(--line);padding:18px;cursor:pointer;text-align:center;transition:transform .1s ease,box-shadow .1s ease;}
+  .game-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);}
+  .game-card .gc-icon{font-size:36px;margin-bottom:8px;}
+  .game-card h3{margin:0 0 4px;font-size:15px;}
+  .game-card p{font-size:11px;color:#8B7E6B;margin:0;}
+  /* Memory match */
+  .memory-board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0;}
+  @media(max-width:380px){.memory-board{grid-template-columns:repeat(3,1fr);}}
+  .mem-card{aspect-ratio:1;border-radius:14px;border:2px solid var(--line);background:var(--teal);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:28px;transition:transform .15s ease;user-select:none;}
+  .mem-card.flipped,.mem-card.matched{background:var(--paper);border-color:var(--teal);}
+  .mem-card.matched{border-color:#4CAF50;background:#E8F5E9;cursor:default;}
+  .mem-card span{display:none;pointer-events:none;}
+  .mem-card.flipped span,.mem-card.matched span{display:block;}
+  .mem-card:not(.flipped):not(.matched):hover{transform:scale(1.04);}
+  /* Fuel Up (Snake) */
+  #fuelCanvas{border-radius:14px;border:2px solid var(--line);display:block;margin:0 auto;max-width:100%;touch-action:none;}
+  .fuel-score{text-align:center;font-family:'Fredoka',sans-serif;font-size:20px;font-weight:700;color:var(--teal-deep);margin-bottom:8px;}
+  .snake-controls{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:6px;margin:12px auto 0;width:fit-content;}
+  .snake-controls button{width:48px;height:48px;border-radius:12px;border:2px solid var(--line);background:var(--paper);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .snake-controls button:active{background:var(--teal);color:white;}
+  /* Trivia */
+  .trivia-q{font-size:15px;font-weight:600;margin-bottom:14px;line-height:1.4;}
+  .trivia-opts{display:flex;flex-direction:column;gap:8px;}
+  .trivia-opts button{text-align:left;padding:12px 14px;border-radius:14px;border:2px solid var(--line);background:var(--paper);font-size:13px;cursor:pointer;font-family:inherit;transition:background .1s;}
+  .trivia-opts button:hover:not(:disabled){background:#EDE8E0;}
+  .trivia-opts button.correct{background:#D4EAE0;border-color:var(--teal);}
+  .trivia-opts button.wrong{background:#FFE8E5;border-color:var(--coral);}
+  .trivia-result{margin-top:12px;font-size:13px;font-weight:600;padding:10px;border-radius:12px;}
+  /* Catch & Dodge */
+  #catchCanvas{border-radius:14px;border:2px solid var(--line);display:block;margin:0 auto;max-width:100%;touch-action:none;}
+  .catch-score{text-align:center;font-family:'Fredoka',sans-serif;font-size:20px;font-weight:700;color:var(--teal-deep);margin-bottom:8px;}
+  .catch-controls{display:flex;gap:16px;justify-content:center;margin-top:12px;}
+  .catch-controls button{width:72px;height:52px;border-radius:14px;border:2px solid var(--line);background:var(--paper);font-size:22px;cursor:pointer;font-weight:700;}
+  .catch-controls button:active{background:var(--teal);color:white;}
+
+  /* Reflection modal */
+  .reflection-overlay{position:fixed;inset:0;background:rgba(60,50,40,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;}
+  .reflection-modal{background:var(--paper);border-radius:18px;padding:24px 20px;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,.18);}
+  .reflection-modal h3{margin:0 0 8px; font-size:17px;}
+  .reflection-modal p{font-size:12px;color:#8B7E6B;margin:0 0 12px;}
+  .reflection-modal textarea{width:100%;box-sizing:border-box;min-height:80px;font-size:13px;resize:vertical;}
+  .reflection-modal .btn-row{display:flex;gap:8px;margin-top:14px;}
+  .reflection-modal .btn-row .btn{flex:1;}
+  /* Leader dashboard */
+  .leader-tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;}
+  .leader-tabs button{flex:1;min-width:80px;padding:9px 10px;border-radius:12px;border:2px solid var(--line);background:var(--paper);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;color:#8B7E6B;}
+  .leader-tabs button.active{background:var(--teal);border-color:var(--teal-deep);color:white;}
+  .stamp-designer-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+  .stamp-designer-row input{flex:1;}
+  .custom-stamp-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;margin:3px;cursor:default;}
+  .challenge-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+  .challenge-row .month-label{width:90px;font-size:12px;font-weight:600;color:#8B7E6B;flex-shrink:0;}
+  .challenge-row input{flex:1;}
+  .streak-badge{display:inline-flex;align-items:center;gap:4px;background:#FFF3E0;color:#E65100;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;margin-left:8px;}
   .progress-label{font-size:13px; font-weight:600; color:var(--teal-deep); margin-top:8px;}
 
   /* ===== PASSPORT ===== */
@@ -173,7 +247,7 @@
     border-radius:18px; padding:20px; text-align:center; margin-bottom:18px; color:white;
     background:linear-gradient(135deg, var(--coral), var(--sun));
   }
-  .tier-banner .big{font-family:'Fredoka',sans-serif; font-size:28px; font-weight:700;}
+  .tier-banner .big{font-family:'Fredoka',sans-serif; font-size:clamp(20px,6vw,28px); font-weight:700;}
   .stamp-list{display:flex; flex-direction:column; gap:10px;}
   .stamp-item{
     border:2px solid var(--coral); border-radius:14px;
@@ -182,7 +256,7 @@
   }
   .stamp-item .stamp-icon{font-size:22px; flex-shrink:0;}
   .stamp-item .stamp-body{flex:1; min-width:0;}
-  .stamp-item .ev{font-family:'Fredoka',sans-serif; font-weight:700; font-size:14px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .stamp-item .ev{font-family:'Fredoka',sans-serif; font-weight:700; font-size:14px; line-height:1.2; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;}
   .stamp-item .dt{font-size:11px; margin-top:2px; opacity:.75;}
   .stamp-item.empty{border-style:dashed; color:#C9BCA6; border-color:#D9CBB3; background:transparent; justify-content:center; padding:16px; font-size:20px;}
   .modal-overlay{
@@ -262,11 +336,30 @@ let state = {
   loading: true,
   loginErr: "",
   presErr: "",
+  forgotMode: false,
+  forgotErr: "",
+  forgotOk: false,
+  presidentTab: "members",
+  presidentNotifs: null,
+  presidentNotifsLoading: false,
+  // Leader login (from main login screen, no member account needed)
+  leaderMode: false,
+  leaderVerified: false,
+  leaderChapter: "",
+  leaderErr: "",
+  leaderTab: "members",  // tabs: members, stamps, challenges
+  // Wellness reflection
+  reflectionPending: null,  // {type, idx, habitId, num, daysDone, label, awardType}
+  // Dynamic meetings/challenges (loaded from Firestore)
+  dynamicMeetings: null,
+  announcement: null,       // {text, createdAt} from Firestore
+  chapterLeaders: null,     // cached leaderboard for passport screen
+  avatarEditing: false,
 };
 
-function emptyProfile(name, studentId, chapterCode){
+function emptyProfile(name, studentId, chapterCode, password){
   return {
-    name, studentId, chapterCode,
+    name, studentId, chapterCode, password: password||'',
     meetings: {}, // n -> {goal, days:[30 bool]}
     personalHabits: [], // {id,name,days[30]}
     passport: [], // {eventName, date, passcode}
@@ -293,6 +386,49 @@ const AWARD_TIERS = [
 function profileRef(chapterCode, studentId){
   return db.collection('chapters').doc(chapterCode).collection('profiles').doc(studentId);
 }
+function customStampsRef(chapterCode){
+  return db.collection('chapters').doc(chapterCode).collection('customStamps');
+}
+async function getCustomStamps(chapterCode){
+  try{ const snap = await customStampsRef(chapterCode).get(); return snap.docs.map(d=>({id:d.id,...d.data()})); }
+  catch(e){ return []; }
+}
+async function saveCustomStamp(chapterCode, stamp){
+  try{ await customStampsRef(chapterCode).doc(stamp.id).set(stamp); return true; }
+  catch(e){ return false; }
+}
+async function deleteCustomStamp(chapterCode, stampId){
+  try{ await customStampsRef(chapterCode).doc(stampId).delete(); return true; }
+  catch(e){ return false; }
+}
+function announcementRef(chapterCode){
+  return db.collection('chapters').doc(chapterCode).collection('settings').doc('announcement');
+}
+async function getAnnouncement(chapterCode){
+  try{ const snap = await announcementRef(chapterCode).get(); return snap.exists ? snap.data() : null; }
+  catch(e){ return null; }
+}
+async function setAnnouncement(chapterCode, text){
+  try{ await announcementRef(chapterCode).set({text, createdAt:Date.now()}); return true; }
+  catch(e){ return false; }
+}
+async function clearAnnouncement(chapterCode){
+  try{ await announcementRef(chapterCode).delete(); return true; }
+  catch(e){ return false; }
+}
+function challengesRef(chapterCode){
+  return db.collection('chapters').doc(chapterCode).collection('settings').doc('challenges');
+}
+async function getDynamicChallenges(chapterCode){
+  try{
+    const snap = await challengesRef(chapterCode).get();
+    return (snap.exists && snap.data().meetings) ? snap.data().meetings : null;
+  }catch(e){ return null; }
+}
+async function saveDynamicChallenges(chapterCode, meetings){
+  try{ await challengesRef(chapterCode).set({meetings, updatedAt:Date.now()}); return true; }
+  catch(e){ return false; }
+}
 function officerRef(chapterCode){
   return db.collection('chapters').doc(chapterCode).collection('officer').doc('current');
 }
@@ -311,6 +447,31 @@ async function setChapterOfficerCode(chapterCode, code){
     return true;
   }catch(e){ console.error(e); return false; }
 }
+
+// ── Reset request helpers ──
+function resetRequestRef(chapterCode, username){
+  return db.collection('chapters').doc(chapterCode).collection('resetRequests').doc(username);
+}
+async function submitResetRequest(chapterCode, username, name){
+  await resetRequestRef(chapterCode, username).set({
+    name, username, chapterCode,
+    requestedAt: new Date().toISOString(),
+    status: 'pending'
+  });
+}
+async function loadResetRequests(){
+  const snap = await db.collectionGroup('resetRequests').where('status','==','pending').get();
+  return snap.docs.map(d => d.data());
+}
+async function approveResetRequest(chapterCode, username){
+  const profile = await loadProfile(chapterCode, username);
+  if(profile){ profile.password = username; await saveProfile(profile); }
+  await resetRequestRef(chapterCode, username).delete();
+}
+async function denyResetRequest(chapterCode, username){
+  await resetRequestRef(chapterCode, username).delete();
+}
+
 async function loadProfile(chapterCode, studentId){
   try{
     const snap = await profileRef(chapterCode, studentId).get();
@@ -374,7 +535,11 @@ async function handleMilestones(profile, beforeCount, afterCount, awardId, award
 function render(){
   const root = document.getElementById('root');
   if(state.presidentMode){ root.innerHTML = presidentScreen(); attachPresidentHandlers(); return; }
-  if(!state.user){ root.innerHTML = loginScreen(); attachLoginHandlers(); return; }
+  if(state.leaderMode){ root.innerHTML = leaderScreen(); attachLeaderHandlers(); return; }
+  if(!state.user){
+    if(state.forgotMode){ root.innerHTML = forgotScreen(); attachForgotHandlers(); return; }
+    root.innerHTML = loginScreen(); attachLoginHandlers(); return;
+  }
   if(state.officerMode){ root.innerHTML = officerScreen(); attachOfficerHandlers(); return; }
 
   const isIndependent = state.profile.chapterCode === INDEPENDENT_CODE;
@@ -384,6 +549,9 @@ function render(){
   else if(state.view === "habits") body = habitsScreen();
   else if(state.view === "passport") body = passportScreen();
   else if(state.view === "awards") body = awardsScreen();
+  else if(state.view === "settings") body = settingsScreen();
+  else if(state.view === "games") body = gamesScreen();
+  else if(state.view === "journal") body = journalScreen();
 
   root.innerHTML = `
     <div class="topbar">
@@ -399,6 +567,9 @@ function render(){
       <button data-view="habits" class="${state.view==='habits'?'active':''}">✨ My Habits</button>
       ${isIndependent ? '' : `<button data-view="passport" class="${state.view==='passport'?'active':''}">📘 Passport</button>`}
       <button data-view="awards" class="${state.view==='awards'?'active':''}">🏆 Awards</button>
+      <button data-view="journal" class="${state.view==='journal'?'active':''}">📔 Journal</button>
+      <button data-view="games" class="${state.view==='games'?'active':''}">🎮 Games</button>
+      <button data-view="settings" class="${state.view==='settings'?'active':''}">⚙️ Settings</button>
     </nav>
     <div class="app">${body}</div>
     ${isIndependent ? '' : '<footer class="officer-link"><button id="officerEntryBtn">Officer Mode</button></footer>'}
@@ -408,18 +579,544 @@ function render(){
   if(state.view === "meetings") attachMeetingsHandlers();
   if(state.view === "habits") attachHabitsHandlers();
   if(state.view === "passport") attachPassportHandlers();
+  if(state.view === "games") attachGamesHandlers();
 }
+
+
+/* ============ JOURNAL ============ */
+function journalScreen(){
+  const entries = [];
+  const meetings = getMeetings();
+  Object.entries(state.profile.meetings||{}).forEach(([n, prog])=>{
+    const m = meetings.find(x=>x.n===parseInt(n));
+    const label = m ? `Meeting ${n}: ${m.habit}` : `Meeting ${n}`;
+    (prog.days||[]).forEach((d,i)=>{
+      const ref = getDayReflection(d);
+      if(ref) entries.push({label, day:i+1, text:ref, type:'meeting'});
+    });
+  });
+  (state.profile.personalHabits||[]).forEach(h=>{
+    h.days.forEach((d,i)=>{
+      const ref = getDayReflection(d);
+      if(ref) entries.push({label:h.name, day:i+1, text:ref, type:'habit'});
+    });
+  });
+  if(entries.length===0) return `
+    <h2 style="margin-top:0;">📔 Wellness Journal</h2>
+    <div class="card" style="text-align:center;padding:36px 20px;">
+      <div style="font-size:40px;margin-bottom:12px;">📝</div>
+      <h3 style="margin:0 0 8px;">No reflections yet</h3>
+      <p style="font-size:13px;color:#8B7E6B;margin:0;">When you mark a habit day done, you can add a quick wellness reflection. They'll all show up here.</p>
+    </div>`;
+  const html = entries.map(e=>`
+    <div class="card" style="padding:14px 18px; margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:${e.type==='meeting'?'var(--teal-deep)':'var(--coral-deep)'};">${e.type==='meeting'?'📅':'✨'} ${escapeHtml(e.label)}</span>
+        <span style="font-size:11px;color:#B0A490;">Day ${e.day}</span>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:var(--ink);">"${escapeHtml(e.text)}"</div>
+    </div>`).join('');
+  return `
+    <h2 style="margin-top:0;">📔 Wellness Journal</h2>
+    <p style="font-size:13px;color:#8B7E6B;margin-top:-8px;margin-bottom:16px;">${entries.length} reflection${entries.length===1?'':'s'} captured</p>
+    ${html}`;
+}
+
+
+/* ============ GAMES ============ */
+function gamesScreen(){
+  if(typeof _gameActive !== 'undefined' && _gameActive === 'memory') return memoryGameScreen();
+  if(typeof _gameActive !== 'undefined' && _gameActive === 'fuel') return fuelGameScreen();
+  if(typeof _gameActive !== 'undefined' && _gameActive === 'trivia') return triviaGameScreen();
+  if(typeof _gameActive !== 'undefined' && _gameActive === 'flow') return flowGameScreen();
+  return `
+  <h2 style="margin-top:0;">🎮 Games</h2>
+  <p style="color:#8B7E6B;font-size:13px;margin-top:-6px;">Take a brain break — wellness-inspired games to reset and recharge.</p>
+  <div class="games-grid">
+    <div class="game-card" id="playMemory">
+      <div class="gc-icon">🧩</div>
+      <h3>Mind Match</h3>
+      <p>Flip cards to find wellness habit pairs — each match reveals a quick fact</p>
+    </div>
+    <div class="game-card" id="playFuel">
+      <div class="gc-icon">🥤</div>
+      <h3>Fuel Up</h3>
+      <p>Navigate to collect good-for-you foods and power up your wellness streak</p>
+    </div>
+    <div class="game-card" id="playTrivia">
+      <div class="gc-icon">🧠</div>
+      <h3>Wellness Trivia</h3>
+      <p>Quiz yourself on sleep, hydration, mindfulness, and more</p>
+    </div>
+    <div class="game-card" id="playFlow">
+      <div class="gc-icon">🪣</div>
+      <h3>Catch &amp; Dodge</h3>
+      <p>Move your basket to catch healthy foods and dodge junk — how long can you last?</p>
+    </div>
+  </div>`;
+}
+function attachGamesHandlers(){
+  const mem = document.getElementById('playMemory');
+  if(mem) mem.onclick = () => { _gameActive = 'memory'; _memState = null; render(); initMemoryGame(); };
+  const fu = document.getElementById('playFuel');
+  if(fu) fu.onclick = () => { _gameActive = 'fuel'; render(); initFuelGame(); };
+  const tr = document.getElementById('playTrivia');
+  if(tr) tr.onclick = () => { _gameActive = 'trivia'; _triviaIdx = 0; _triviaScore = 0; _triviaAns = null; render(); attachTriviaHandlers(); };
+  const fl = document.getElementById('playFlow');
+  if(fl) fl.onclick = () => { _gameActive = 'flow'; render(); initFlowGame(); };
+  if(_gameActive === 'memory') attachMemoryHandlers();
+  if(_gameActive === 'fuel') attachFuelHandlers();
+  if(_gameActive === 'trivia') attachTriviaHandlers();
+  if(_gameActive === 'flow') attachFlowHandlers();
+}
+
+/* ---- shared ---- */
+let _gameActive = null;
+function gameBackBtn(){ return `<button class="backlink" id="gameBackBtn">← Games</button>`; }
+function attachGameBack(){ const b=document.getElementById('gameBackBtn'); if(b) b.onclick=()=>{ _gameActive=null; stopFuel(); stopFlow(); render(); }; }
+
+/* ============ MIND MATCH (Memory) ============ */
+const MEM_PAIRS = [
+  {emoji:'💧', fact:'Drinking water first thing in the morning jumpstarts your metabolism.'},
+  {emoji:'🧘', fact:'Even 5 minutes of stretching reduces stress hormones.'},
+  {emoji:'🍎', fact:'Eating an apple is as energizing as a cup of coffee for most people.'},
+  {emoji:'🌙', fact:'Teens who sleep 8–10 hrs have 40% better memory retention.'},
+  {emoji:'🏃', fact:'20 minutes of movement boosts your mood for up to 12 hours.'},
+  {emoji:'🫁', fact:'Deep breathing for 2 minutes lowers cortisol levels measurably.'},
+  {emoji:'🫐', fact:'Blueberries are one of the highest antioxidant foods you can eat.'},
+  {emoji:'🌿', fact:'Spending time in nature lowers blood pressure and anxiety.'},
+  {emoji:'🧠', fact:'Learning something new every day literally grows your brain.'},
+  {emoji:'💪', fact:'Strength training 2x a week improves bone density for life.'},
+  {emoji:'🫶', fact:'Acts of kindness release oxytocin — a natural mood booster.'},
+  {emoji:'🎯', fact:'Writing down goals makes you 42% more likely to achieve them.'},
+];
+let _memState = null;
+function memoryGameScreen(){
+  if(!_memState) return `<div class="card"><p>Loading…</p></div>`;
+  const {cards, flipped, matched, moves, won, lastFact} = _memState;
+  const cardHtml = cards.map((c,i)=>{
+    const isFlipped = flipped.includes(i);
+    const isMatched = matched.includes(i);
+    return `<div class="mem-card ${isFlipped?'flipped':''} ${isMatched?'matched':''}" data-mi="${i}"><span>${c.emoji}</span></div>`;
+  }).join('');
+  return `${gameBackBtn()}
+  <h2 style="margin:12px 0 4px;">🧩 Mind Match</h2>
+  <p style="font-size:12px;color:#8B7E6B;margin:0 0 2px;">Match all wellness pairs · <b>${moves}</b> moves</p>
+  ${lastFact ? `<div style="background:#D4EAE0;border-radius:12px;padding:10px 14px;font-size:12px;color:var(--teal-deep);margin-bottom:6px;">💡 ${escapeHtml(lastFact)}</div>` : ''}
+  ${won?`<div class="msg ok" style="margin:6px 0;">🎉 All matched in ${moves} moves! <button class="btn teal" id="memRestartBtn" style="margin-left:10px;padding:6px 14px;font-size:13px;">Play again</button></div>`:''}
+  <div class="memory-board">${cardHtml}</div>`;
+}
+function initMemoryGame(){
+  const deck = [...MEM_PAIRS,...MEM_PAIRS].sort(()=>Math.random()-.5);
+  _memState = {cards:deck, flipped:[], matched:[], moves:0, won:false, locked:false, lastFact:''};
+  render(); attachMemoryHandlers();
+}
+function attachMemoryHandlers(){
+  attachGameBack();
+  const restart = document.getElementById('memRestartBtn');
+  if(restart) restart.onclick = () => initMemoryGame();
+  document.querySelectorAll('.mem-card').forEach(el=>{
+    el.onclick = ()=>{
+      if(!_memState||_memState.locked) return;
+      const i = parseInt(el.getAttribute('data-mi'));
+      const {flipped, matched} = _memState;
+      if(flipped.includes(i)||matched.includes(i)) return;
+      _memState.flipped = [...flipped, i];
+      _memState.lastFact = '';
+      render(); attachMemoryHandlers();
+      if(_memState.flipped.length === 2){
+        _memState.locked = true;
+        _memState.moves++;
+        const [a,b] = _memState.flipped;
+        if(_memState.cards[a].emoji===_memState.cards[b].emoji){
+          _memState.matched = [..._memState.matched,a,b];
+          _memState.flipped = [];
+          _memState.locked = false;
+          _memState.lastFact = _memState.cards[a].fact;
+          _memState.won = _memState.matched.length === _memState.cards.length;
+          render(); attachMemoryHandlers();
+        } else {
+          setTimeout(()=>{
+            _memState.flipped = [];
+            _memState.locked = false;
+            render(); attachMemoryHandlers();
+          }, 900);
+        }
+      }
+    };
+  });
+}
+
+/* ============ FUEL UP (Snake remake) ============ */
+const FUEL_FOODS = ['💧','🍎','🫐','🥦','🌿','🍋','🫶','💪'];
+const FUEL_POINTS = {
+  '💧':5, '🍎':10, '🫐':15, '🥦':20, '🌿':10, '🍋':10, '🫶':25, '💪':30
+};
+let _fuelTimer = null;
+let _fuelState = null;
+function fuelGameScreen(){
+  return `${gameBackBtn()}
+  <h2 style="margin:12px 0 4px;">🥤 Fuel Up</h2>
+  <div class="fuel-score">Score: <span id="fuelScore">0</span> · <span id="fuelFood" style="font-size:16px;"></span></div>
+  <canvas id="fuelCanvas" width="280" height="280"></canvas>
+  <div id="fuelMsg" style="text-align:center;margin-top:10px;font-size:13px;color:#8B7E6B;"></div>
+  <div class="snake-controls">
+    <div></div><button id="fnUp">↑</button><div></div>
+    <button id="fnLeft">←</button><button id="fnDown">↓</button><button id="fnRight">→</button>
+  </div>
+  <p style="text-align:center;font-size:11px;color:#B0A490;margin-top:8px;">Collect the good stuff — rarer items are worth more 🌿</p>`;
+}
+function stopFuel(){ if(_fuelTimer){ clearInterval(_fuelTimer); _fuelTimer=null; } }
+function initFuelGame(){
+  attachGameBack(); attachFuelHandlers();
+  const GRID=14;
+  _fuelState = {
+    snake:[{x:7,y:7},{x:6,y:7},{x:5,y:7}],
+    dir:{x:1,y:0}, next:{x:1,y:0},
+    food:spawnFood(14,[{x:7,y:7},{x:6,y:7},{x:5,y:7}]),
+    score:0, dead:false, grid:GRID, speed:160
+  };
+  stopFuel();
+  _fuelTimer = setInterval(fuelTick, _fuelState.speed);
+  drawFuel();
+}
+function spawnFood(grid, snake){
+  let p; const emoji = FUEL_FOODS[Math.floor(Math.random()*FUEL_FOODS.length)];
+  do { p={x:Math.floor(Math.random()*grid), y:Math.floor(Math.random()*grid)}; }
+  while(snake.some(s=>s.x===p.x&&s.y===p.y));
+  return {...p, emoji};
+}
+function fuelTick(){
+  if(!_fuelState||_fuelState.dead) return;
+  const s=_fuelState;
+  s.dir={...s.next};
+  const head={x:s.snake[0].x+s.dir.x, y:s.snake[0].y+s.dir.y};
+  if(head.x<0||head.x>=s.grid||head.y<0||head.y>=s.grid||s.snake.some(p=>p.x===head.x&&p.y===head.y)){
+    s.dead=true; stopFuel();
+    const msgEl=document.getElementById('fuelMsg');
+    if(msgEl) msgEl.innerHTML=`Game over! You fueled up with <b>${s.score} pts</b>. <button class="btn teal" id="fuRestart" style="margin-left:8px;padding:5px 12px;font-size:12px;">Try again</button>`;
+    const rb=document.getElementById('fuRestart');
+    if(rb) rb.onclick=()=>initFuelGame();
+    return;
+  }
+  s.snake.unshift(head);
+  if(head.x===s.food.x&&head.y===s.food.y){
+    const pts = FUEL_POINTS[s.food.emoji]||10;
+    s.score += pts;
+    s.food = spawnFood(s.grid, s.snake);
+    const sc=document.getElementById('fuelScore'); if(sc) sc.textContent=s.score;
+    const fd=document.getElementById('fuelFood'); if(fd) fd.textContent=`+${pts} ${s.food.emoji}`;
+    // Speed up every 50 pts
+    if(s.score % 50 === 0 && s.speed > 80){ stopFuel(); s.speed-=15; _fuelTimer=setInterval(fuelTick,s.speed); }
+  } else { s.snake.pop(); }
+  drawFuel();
+}
+function drawFuel(){
+  const canvas=document.getElementById('fuelCanvas');
+  if(!canvas||!_fuelState) return;
+  const maxW = Math.min(canvas.parentElement ? canvas.parentElement.clientWidth-32 : 280, 280);
+  const cellSz = Math.floor(maxW/_fuelState.grid);
+  const size = cellSz*_fuelState.grid;
+  canvas.width=size; canvas.height=size;
+  const ctx=canvas.getContext('2d');
+  const s=_fuelState;
+  // Grid background
+  ctx.fillStyle='#F6F1E3'; ctx.fillRect(0,0,size,size);
+  for(let x=0;x<s.grid;x++) for(let y=0;y<s.grid;y++){
+    if((x+y)%2===0){ ctx.fillStyle='rgba(0,0,0,0.02)'; ctx.fillRect(x*cellSz,y*cellSz,cellSz,cellSz); }
+  }
+  // Food
+  ctx.font=`${cellSz-4}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(s.food.emoji, s.food.x*cellSz+cellSz/2, s.food.y*cellSz+cellSz/2);
+  // Snake body (vine/plant style)
+  s.snake.forEach((p,i)=>{
+    const prog = i/s.snake.length;
+    const g=canvas.getContext('2d');
+    g.fillStyle = i===0 ? '#1A5C52' : `rgba(44,${Math.floor(110+prog*30)},${Math.floor(68+prog*30)},${1-prog*0.3})`;
+    g.beginPath();
+    if(typeof g.roundRect==='function') g.roundRect(p.x*cellSz+1,p.y*cellSz+1,cellSz-2,cellSz-2,5);
+    else g.rect(p.x*cellSz+1,p.y*cellSz+1,cellSz-2,cellSz-2);
+    g.fill();
+    if(i===0){
+      // Head eyes
+      g.fillStyle='white';
+      g.beginPath(); g.arc(p.x*cellSz+cellSz*0.65,p.y*cellSz+cellSz*0.35,2.5,0,Math.PI*2); g.fill();
+      g.fillStyle='#163E3B';
+      g.beginPath(); g.arc(p.x*cellSz+cellSz*0.65,p.y*cellSz+cellSz*0.35,1.2,0,Math.PI*2); g.fill();
+    }
+  });
+}
+function attachFuelHandlers(){
+  attachGameBack();
+  const dirs={fnUp:{x:0,y:-1},fnDown:{x:0,y:1},fnLeft:{x:-1,y:0},fnRight:{x:1,y:0}};
+  Object.entries(dirs).forEach(([id,d])=>{
+    const btn=document.getElementById(id);
+    if(btn) btn.onclick=()=>{ if(_fuelState&&!_fuelState.dead&&!(d.x===-_fuelState.dir.x&&d.y===-_fuelState.dir.y)) _fuelState.next=d; };
+  });
+  document._fuelKH = (e)=>{
+    if(!_fuelState||_fuelState.dead) return;
+    const map={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}};
+    const d=map[e.key]; if(!d) return;
+    if(!(d.x===-_fuelState.dir.x&&d.y===-_fuelState.dir.y)) _fuelState.next=d;
+    e.preventDefault();
+  };
+  document.removeEventListener('keydown',document._fuelKH);
+  document.addEventListener('keydown',document._fuelKH);
+  const canvas=document.getElementById('fuelCanvas');
+  if(canvas){
+    let tx,ty;
+    canvas.ontouchstart=e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;e.preventDefault();};
+    canvas.ontouchmove=e=>e.preventDefault();
+    canvas.ontouchend=e=>{
+      if(!_fuelState||_fuelState.dead) return;
+      const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+      let d; if(Math.abs(dx)>Math.abs(dy)) d=dx>0?{x:1,y:0}:{x:-1,y:0}; else d=dy>0?{x:0,y:1}:{x:0,y:-1};
+      if(!(d.x===-_fuelState.dir.x&&d.y===-_fuelState.dir.y)) _fuelState.next=d;
+    };
+  }
+}
+
+/* ============ CATCH & DODGE ============ */
+// TWS-inspired: catch wellness wins, dodge setbacks
+const CATCH_GOOD  = ['💧','🏃','📚','🌿','🫶','😴','🧘','🎯','💪','🫐'];
+const CATCH_BAD   = ['📱','😤','🍟','🥤','🧁'];  // phone distraction, stress, junk
+const CATCH_LABELS = {'💧':'Hydrated!','🏃':'Active!','📚':'Learning!','🌿':'Mindful!','🫶':'Kind!','😴':'Rested!','🧘':'Centered!','🎯':'Focused!','💪':'Strong!','🫐':'Fueled!','📱':'Distracted…','😤':'Stressed…','🍟':'Junk!','🥤':'Sugar crash!','🧁':'Sugar rush!'};
+const CATCH_W = 280, CATCH_H = 400, CATCH_COLS = 7;
+let _catchTimer=null, _catchState=null;
+function flowGameScreen(){
+  return `${gameBackBtn()}
+  <h2 style="margin:12px 0 4px;">🪣 Catch & Dodge</h2>
+  <div class="catch-score">Score: <span id="catchScore">0</span> · Lives: <span id="catchLives">3</span></div>
+  <canvas id="catchCanvas" width="${CATCH_W}" height="${CATCH_H}"></canvas>
+  <div id="catchMsg" style="text-align:center;min-height:28px;font-size:13px;color:#8B7E6B;margin-top:6px;"></div>
+  <div class="catch-controls">
+    <button id="catchLeft">◀</button>
+    <button id="catchRight">▶</button>
+  </div>
+  <p style="text-align:center;font-size:11px;color:#B0A490;margin-top:8px;">Arrow keys · buttons · swipe — dodge junk, catch the good stuff</p>`;
+}
+function stopFlow(){ if(_catchTimer){clearInterval(_catchTimer);_catchTimer=null;} }
+function initFlowGame(){
+  stopFlow();
+  const cellW = Math.floor(CATCH_W / CATCH_COLS);
+  _catchState = {
+    basketCol: Math.floor(CATCH_COLS/2), score: 0, lives: 3,
+    items: [], tick: 0, speed: 28, cellW, dead: false
+  };
+  spawnCatchItem();
+  _catchTimer = setInterval(catchTick, 50);
+  attachFlowHandlers();
+}
+function spawnCatchItem(){
+  if(!_catchState) return;
+  const isGood = Math.random() > 0.35;
+  const list = isGood ? CATCH_GOOD : CATCH_BAD;
+  _catchState.items.push({
+    col: Math.floor(Math.random()*CATCH_COLS),
+    y: -20, emoji: list[Math.floor(Math.random()*list.length)],
+    good: isGood, speed: 2 + Math.random()*1.5
+  });
+}
+function catchTick(){
+  if(!_catchState || _catchState.dead) return;
+  const s = _catchState; s.tick++;
+  // Move items down
+  for(let i=s.items.length-1;i>=0;i--){
+    s.items[i].y += s.items[i].speed * (1 + s.score/200);
+    // Caught?
+    if(s.items[i].y > CATCH_H - 60 && s.items[i].y < CATCH_H - 10 && s.items[i].col === s.basketCol){
+      if(s.items[i].good){ s.score += 10; flashCatchMsg((CATCH_LABELS[s.items[i].emoji]||'+10') + ' +10'); }
+      else { s.lives--; flashCatchMsg(CATCH_LABELS[s.items[i].emoji]||'Oops!'); }
+      s.items.splice(i,1);
+    } else if(s.items[i].y > CATCH_H + 20){
+      // Missed a good item? No penalty, just remove
+      s.items.splice(i,1);
+    }
+  }
+  // Spawn new items
+  if(s.tick % Math.max(12, 30 - Math.floor(s.score/40)) === 0) spawnCatchItem();
+  // Update DOM counters
+  const sc=document.getElementById('catchScore'); if(sc) sc.textContent=s.score;
+  const lv=document.getElementById('catchLives'); if(lv) lv.textContent='❤️'.repeat(Math.max(0,s.lives));
+  if(s.lives <= 0){
+    s.dead=true; stopFlow();
+    const grade = s.score>=300?'Legend 🏆':s.score>=150?'Nice catch! 🌿':s.score>=60?'Getting there 💧':'Keep trying 🌱';
+    const msg=document.getElementById('catchMsg');
+    if(msg) msg.innerHTML=`<b>Game over — ${s.score} pts · ${grade}</b> <button class="btn teal" id="catchRestart" style="margin-left:8px;padding:5px 12px;font-size:12px;">Try again</button>`;
+    const rb=document.getElementById('catchRestart'); if(rb) rb.onclick=()=>initFlowGame();
+    return;
+  }
+  drawCatch();
+}
+let _catchFlashMsg='', _catchFlashT=0;
+function flashCatchMsg(txt){ _catchFlashMsg=txt; _catchFlashT=Date.now()+900; const el=document.getElementById('catchMsg'); if(el) el.textContent=txt; setTimeout(()=>{ const e2=document.getElementById('catchMsg'); if(e2&&Date.now()>_catchFlashT-100) e2.textContent=''; },950); }
+function drawCatch(){
+  const canvas=document.getElementById('catchCanvas'); if(!canvas||!_catchState) return;
+  const s=_catchState;
+  const maxW = Math.min(canvas.parentElement ? canvas.parentElement.clientWidth-32 : CATCH_W, CATCH_W);
+  canvas.width=maxW; canvas.height=CATCH_H;
+  const cw = maxW/CATCH_COLS;
+  const ctx=canvas.getContext('2d');
+  // Sky gradient background
+  const grad=ctx.createLinearGradient(0,0,0,CATCH_H);
+  grad.addColorStop(0,'#E8F4F8'); grad.addColorStop(1,'#F6F1E3');
+  ctx.fillStyle=grad; ctx.fillRect(0,0,maxW,CATCH_H);
+  // Grid lines (subtle)
+  ctx.strokeStyle='rgba(0,0,0,0.04)'; ctx.lineWidth=1;
+  for(let c=1;c<CATCH_COLS;c++){ ctx.beginPath(); ctx.moveTo(c*cw,0); ctx.lineTo(c*cw,CATCH_H); ctx.stroke(); }
+  // Falling items
+  ctx.font=`${Math.round(cw*0.7)}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  for(const item of s.items){
+    ctx.globalAlpha = item.good ? 1 : 0.85;
+    ctx.fillText(item.emoji, item.col*cw+cw/2, item.y);
+  }
+  ctx.globalAlpha=1;
+  // Basket
+  const bx = s.basketCol*cw; const by=CATCH_H-50;
+  ctx.fillStyle='#2C6E68'; ctx.beginPath();
+  if(typeof ctx.roundRect==='function') ctx.roundRect(bx+4,by,cw-8,36,10);
+  else ctx.rect(bx+4,by,cw-8,36);
+  ctx.fill();
+  ctx.font=`${Math.round(cw*0.6)}px serif`; ctx.fillText('🪣',bx+cw/2,by+18);
+}
+function attachFlowHandlers(){
+  attachGameBack();
+  const lBtn=document.getElementById('catchLeft');  if(lBtn) lBtn.onclick=()=>{ if(_catchState&&!_catchState.dead) _catchState.basketCol=Math.max(0,_catchState.basketCol-1); };
+  const rBtn=document.getElementById('catchRight'); if(rBtn) rBtn.onclick=()=>{ if(_catchState&&!_catchState.dead) _catchState.basketCol=Math.min(CATCH_COLS-1,_catchState.basketCol+1); };
+  document._catchKH = e=>{
+    if(!_catchState||_catchState.dead) return;
+    if(e.key==='ArrowLeft'){ _catchState.basketCol=Math.max(0,_catchState.basketCol-1); e.preventDefault(); }
+    if(e.key==='ArrowRight'){ _catchState.basketCol=Math.min(CATCH_COLS-1,_catchState.basketCol+1); e.preventDefault(); }
+  };
+  document.removeEventListener('keydown',document._catchKH);
+  document.addEventListener('keydown',document._catchKH);
+  const canvas=document.getElementById('catchCanvas');
+  if(canvas){
+    let _tx=0;
+    canvas.ontouchstart=e=>{_tx=e.touches[0].clientX;e.preventDefault();};
+    canvas.ontouchmove=e=>e.preventDefault();
+    canvas.ontouchend=e=>{
+      if(!_catchState||_catchState.dead) return;
+      const dx=e.changedTouches[0].clientX-_tx;
+      if(dx<-20) _catchState.basketCol=Math.max(0,_catchState.basketCol-1);
+      else if(dx>20) _catchState.basketCol=Math.min(CATCH_COLS-1,_catchState.basketCol+1);
+    };
+  }
+}
+
+/* ============ WELLNESS TRIVIA ============ */
+const TRIVIA_QS = [
+  {q:"How many glasses of water should most teens drink per day?",opts:["4–5","6–7","8–10","12+"],a:2,exp:"8–10 glasses (about 2–2.5L) keeps you hydrated and focused throughout the day."},
+  {q:"Which sleep duration is recommended for teenagers?",opts:["5–6 hours","7–8 hours","8–10 hours","10–12 hours"],a:2,exp:"Teens need 8–10 hours for brain development, mood regulation, and growth."},
+  {q:"What does mindfulness primarily help with?",opts:["Physical strength","Stress & focus","Calorie tracking","Improving eyesight"],a:1,exp:"Mindfulness reduces stress hormones and improves focus and emotional regulation."},
+  {q:"How long does it typically take to form a new habit?",opts:["7 days","21 days","~66 days","1 year"],a:2,exp:"Research shows habits take an average of 66 days to become automatic — not 21!"},
+  {q:"Which of these is a sign of good mental wellness?",opts:["Never feeling sad","Avoiding all stress","Bouncing back from setbacks","Sleeping 12+ hours"],a:2,exp:"Resilience — the ability to bounce back from difficulty — is a core sign of mental wellness."},
+  {q:"What is the main benefit of stretching daily?",opts:["Builds bulk muscle","Improves flexibility & reduces injury","Burns the most calories","Replaces all cardio"],a:1,exp:"Daily stretching improves range of motion, reduces tension, and lowers injury risk."},
+  {q:"What type of breathing is most calming?",opts:["Rapid shallow breaths","Holding breath","Deep belly (diaphragmatic) breathing","Breathing through the mouth only"],a:2,exp:"Deep belly breathing activates the parasympathetic nervous system, reducing stress fast."},
+  {q:"Which food group gives you the most sustained energy?",opts:["Candy & sweets","Chips","Whole grains & complex carbs","Energy drinks"],a:2,exp:"Complex carbs digest slowly, giving steady energy without a crash."},
+  {q:"What happens to your brain during sleep?",opts:["Nothing — it rests","It consolidates memories and cleans out toxins","It shrinks slightly","It speeds up processing"],a:1,exp:"Sleep is when your brain files memories and flushes waste products — skipping it costs you cognitively."},
+  {q:"Which vitamin do you mostly get from sunlight?",opts:["Vitamin A","Vitamin B12","Vitamin C","Vitamin D"],a:3,exp:"Vitamin D is synthesized in skin when exposed to UVB rays — just 10–20 min outside helps!"},
+];
+let _triviaIdx=0, _triviaScore=0, _triviaAns=null;
+function triviaGameScreen(){
+  if(_triviaIdx >= TRIVIA_QS.length){
+    const pct = Math.round(_triviaScore/TRIVIA_QS.length*100);
+    const icon = pct>=80?'🏆':pct>=60?'🥈':'🌱';
+    const msg = pct>=80?'Wellness expert!':pct>=60?'Solid knowledge!':'Keep learning!';
+    return `${gameBackBtn()}
+    <h2 style="margin:12px 0 4px;">🧠 Results</h2>
+    <div class="card" style="text-align:center;padding:28px;">
+      <div style="font-size:48px;margin-bottom:10px;">${icon}</div>
+      <div class="tier-banner" style="margin-bottom:16px;">
+        <div class="big">${_triviaScore} / ${TRIVIA_QS.length} correct</div>
+        <div style="font-size:14px;opacity:.9;">${msg}</div>
+      </div>
+      <button class="btn teal full" id="triviaRestart">Play again with new order</button>
+    </div>`;
+  }
+  const q = TRIVIA_QS[_triviaIdx];
+  const optsHtml = q.opts.map((o,i)=>`<button class="trivia-opt ${_triviaAns!==null?i===q.a?'correct':i===_triviaAns?'wrong':'':''}" data-oi="${i}" ${_triviaAns!==null?'disabled':''}>${o}</button>`).join('');
+  return `${gameBackBtn()}
+  <h2 style="margin:12px 0 4px;">🧠 Wellness Trivia</h2>
+  <p style="font-size:12px;color:#8B7E6B;margin:0 0 12px;">Question ${_triviaIdx+1} of ${TRIVIA_QS.length} · <b>${_triviaScore}</b> correct so far</p>
+  <div class="card">
+    <div class="trivia-q">${q.q}</div>
+    <div class="trivia-opts">${optsHtml}</div>
+    ${_triviaAns!==null?`
+      <div class="trivia-result" style="background:${_triviaAns===q.a?'#D4EAE0':'#FFE8E5'};color:${_triviaAns===q.a?'#1A5C52':'#C0392B'};">
+        ${_triviaAns===q.a?'✅ Correct!':'❌ Not quite.'} ${q.exp}
+      </div>
+      <button class="btn teal full" id="triviaNextBtn" style="margin-top:12px;">${_triviaIdx+1<TRIVIA_QS.length?'Next question →':'See my score →'}</button>`:''}
+  </div>`;
+}
+function attachTriviaHandlers(){
+  attachGameBack();
+  document.querySelectorAll('.trivia-opt').forEach(btn=>{
+    btn.onclick=()=>{
+      if(_triviaAns!==null) return;
+      const i=parseInt(btn.getAttribute('data-oi'));
+      _triviaAns=i; if(i===TRIVIA_QS[_triviaIdx].a) _triviaScore++;
+      render(); attachTriviaHandlers();
+    };
+  });
+  const nx=document.getElementById('triviaNextBtn');
+  if(nx) nx.onclick=()=>{ _triviaIdx++; _triviaAns=null; render(); attachTriviaHandlers(); };
+  const rs=document.getElementById('triviaRestart');
+  if(rs) rs.onclick=()=>{
+    // Shuffle questions for replay
+    TRIVIA_QS.sort(()=>Math.random()-.5);
+    _triviaIdx=0; _triviaScore=0; _triviaAns=null; render(); attachTriviaHandlers();
+  };
+}
+
+
+const AVATAR_EMOJIS = ['🌿','🌙','⭐','🌸','🔥','🦋','🌊','🏆','🎯','💫','🌈','🧠','💪','🫶','🌱','🦁','🐬','🌺','✨','🍀'];
+const AVATAR_COLORS = [
+  {name:'Teal',    bg:'#D4EAE0', accent:'#2C6E68'},
+  {name:'Coral',   bg:'#FFD6CC', accent:'#C0392B'},
+  {name:'Lavender',bg:'#E8E0F5', accent:'#6B52A0'},
+  {name:'Gold',    bg:'#FFF3CC', accent:'#B8860B'},
+  {name:'Sky',     bg:'#CCE8F5', accent:'#1A6E9E'},
+  {name:'Rose',    bg:'#F5CCDB', accent:'#A03060'},
+  {name:'Sage',    bg:'#D8EDD0', accent:'#3A7040'},
+  {name:'Slate',   bg:'#D8DCEC', accent:'#3A4080'},
+];
 
 function escapeHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 /* ============ LOGIN ============ */
+function forgotScreen(){
+  return `
+  <div class="login-wrap">
+    <div class="card login-card">
+      <img class="login-logo" src="${LOGO_SRC}" alt="Teen Wellness Society logo">
+      <h1 style="margin:0 0 4px;">Forgot Password</h1>
+      <p style="color:#8B7E6B; font-size:13px; margin:0 0 14px;">Enter your info and the president will reset your password.</p>
+      ${state.forgotOk ? `
+        <div style="background:#E8F8F0;border-radius:12px;padding:16px;text-align:center;color:#1A7A4A;font-size:14px;">
+          ✅ Request sent! The president will approve it soon.<br>
+          <span style="font-size:12px;color:#8B7E6B;">Your temporary password will be your username.</span>
+        </div>
+        <button class="btn ghost full" id="forgotBackBtn" style="margin-top:14px;">Back to login</button>
+      ` : `
+        <input type="text" id="forgotChapter" placeholder="Chapter code" style="text-transform:uppercase;">
+        <input type="text" id="forgotUsername" placeholder="Your username" autocomplete="off" style="text-transform:lowercase;">
+        <input type="text" id="forgotName" placeholder="Your first name">
+        <button class="btn full teal" id="forgotSubmitBtn">Send request →</button>
+        ${state.forgotErr ? `<div class="msg err">${state.forgotErr}</div>` : ''}
+        <button class="btn ghost full" id="forgotBackBtn" style="margin-top:8px;">Back to login</button>
+      `}
+    </div>
+  </div>`;
+}
+
 function loginScreen(){
   return `
   <div class="login-wrap">
     <div class="card login-card">
       <img class="login-logo" src="${LOGO_SRC}" alt="Teen Wellness Society logo">
       <h1 style="margin:0 0 4px;">Teen Wellness Society</h1>
-      <p style="color:#8B7E6B; font-size:13px; margin:0 0 14px;">Enter your chapter code, name &amp; password to open your habit tracker</p>
+      <p style="color:#8B7E6B; font-size:13px; margin:0 0 14px;">Enter your chapter code, name, username &amp; password to open your habit tracker</p>
       <div id="chapterFieldWrap">
         <input type="text" id="loginChapter" placeholder="Chapter code (ask your officer)" style="text-transform:uppercase;">
       </div>
@@ -427,19 +1124,51 @@ function loginScreen(){
         <input type="checkbox" id="noChapterToggle" style="width:auto; margin:0;"> I don't have a chapter — just track my own habits
       </label>
       <div id="independentNote" style="display:none; background:#FBF1DD; border-radius:10px; padding:10px 12px; font-size:11.5px; color:#8B7E6B; text-align:left; margin-bottom:12px;">
-        💡 Since you don't have a chapter code, pick a password that's unique to you. Independent accounts share one pool, so a common password could overlap with someone else's.
+        💡 Since you don't have a chapter code, pick a username and password that are unique to you. Independent accounts share one pool, so a common username could overlap with someone else's.
       </div>
       <input type="text" id="loginName" placeholder="Your first name">
+      <input type="text" id="loginUsername" placeholder="Username (you choose this)" autocomplete="off" style="text-transform:lowercase;">
       <div class="id-field">
-        <input type="password" id="loginId" placeholder="Your password" autocomplete="off">
+        <input type="password" id="loginId" placeholder="Password" autocomplete="off">
         <button type="button" id="toggleIdBtn" aria-label="Show password">👁</button>
       </div>
       <button class="btn full" id="loginBtn">Let's go →</button>
       ${state.loginErr ? `<div class="msg err">${state.loginErr}</div>` : ""}
-      <div style="margin-top:18px; border-top:1px solid #EDE8E0; padding-top:14px; text-align:center;"><button id="presidentLoginBtn" style="background:none; border:none; font-size:12px; color:#B0A490; cursor:pointer; font-family:inherit; text-decoration:underline;">President login</button></div>
+      <div style="margin-top:18px; border-top:1px solid #EDE8E0; padding-top:14px; text-align:center; display:flex; justify-content:space-between; gap:4px; flex-wrap:wrap;">
+        <button id="forgotPwBtn" style="background:none; border:none; font-size:12px; color:#B0A490; cursor:pointer; font-family:inherit; text-decoration:underline;">Forgot password?</button>
+        <button id="leaderLoginBtn" style="background:none; border:none; font-size:12px; color:#6B9E8B; cursor:pointer; font-family:inherit; text-decoration:underline; font-weight:600;">Leader login</button>
+        <button id="presidentLoginBtn" style="background:none; border:none; font-size:12px; color:#B0A490; cursor:pointer; font-family:inherit; text-decoration:underline;">President login</button>
+      </div>
     </div>
   </div>`;
 }
+function attachForgotHandlers(){
+  const backBtn = document.getElementById('forgotBackBtn');
+  if(backBtn) backBtn.onclick = () => { state.forgotMode = false; state.forgotOk = false; state.forgotErr = ""; render(); };
+  const submitBtn = document.getElementById('forgotSubmitBtn');
+  if(!submitBtn) return;
+  submitBtn.onclick = async () => {
+    const chapterRaw = document.getElementById('forgotChapter').value.trim();
+    const username = document.getElementById('forgotUsername').value.trim().toLowerCase().replace(/\s+/g,'');
+    const name = document.getElementById('forgotName').value.trim();
+    if(!chapterRaw || !username || !name){ state.forgotErr = "Please fill in all fields."; render(); return; }
+    const chapterCode = chapterRaw.toUpperCase().replace(/\s+/g,'');
+    // Verify the member exists
+    const profile = await loadProfile(chapterCode, username);
+    if(!profile){ state.forgotErr = "No account found with that username and chapter code."; render(); return; }
+    if(profile.name.toLowerCase() !== name.toLowerCase()){ state.forgotErr = "Name doesn't match our records."; render(); return; }
+    try{
+      await submitResetRequest(chapterCode, username, profile.name);
+      state.forgotOk = true;
+      state.forgotErr = "";
+      render();
+    }catch(e){
+      state.forgotErr = "Something went wrong. Please try again.";
+      render();
+    }
+  };
+}
+
 function attachLoginHandlers(){
   document.getElementById('toggleIdBtn').onclick = () => {
     const input = document.getElementById('loginId');
@@ -450,6 +1179,10 @@ function attachLoginHandlers(){
   };
   const presBtn = document.getElementById('presidentLoginBtn');
   if(presBtn) presBtn.onclick = () => { state.presidentMode = true; render(); };
+  const leaderBtn = document.getElementById('leaderLoginBtn');
+  if(leaderBtn) leaderBtn.onclick = () => { state.leaderMode = true; state.leaderVerified = false; state.leaderErr = ""; render(); };
+  const forgotBtn = document.getElementById('forgotPwBtn');
+  if(forgotBtn) forgotBtn.onclick = () => { state.forgotMode = true; state.forgotErr = ""; state.forgotOk = false; render(); };
   document.getElementById('noChapterToggle').onchange = (e) => {
     document.getElementById('chapterFieldWrap').style.display = e.target.checked ? 'none' : 'block';
     document.getElementById('independentNote').style.display = e.target.checked ? 'block' : 'none';
@@ -460,16 +1193,34 @@ function attachLoginHandlers(){
     const name = document.getElementById('loginName').value.trim();
     const id = document.getElementById('loginId').value.trim();
     if(!noChapter && !chapterRaw){ state.loginErr = "Enter your chapter code, or check the box if you don't have one."; render(); return; }
-    if(!name || !id){ state.loginErr = "Please fill in your name and password."; render(); return; }
+    const username = document.getElementById('loginUsername').value.trim().toLowerCase().replace(/\s+/g,'');
+    if(!name || !username || !id){ state.loginErr = "Please fill in your name, username, and password."; render(); return; }
     const chapterCode = noChapter ? INDEPENDENT_CODE : chapterRaw.toUpperCase().replace(/\s+/g,'');
-    const cleanId = id.toLowerCase().replace(/\s+/g,'');
-    let profile = await loadProfile(chapterCode, cleanId);
-    if(!profile){ profile = emptyProfile(name, cleanId, chapterCode); await saveProfile(profile); }
+    let profile = await loadProfile(chapterCode, username);
+    if(!profile){
+      // New member — create profile with password
+      profile = emptyProfile(name, username, chapterCode, id);
+      await saveProfile(profile);
+    } else {
+      // Returning member — check password
+      if(profile.password && profile.password !== id){
+        state.loginErr = "Incorrect password.";
+        render();
+        return;
+      }
+      // If no password stored yet (legacy account), save it now
+      if(!profile.password){ profile.password = id; await saveProfile(profile); }
+    }
     if(!profile.awards) profile.awards = [];
     if(!profile.passportSlots) profile.passportSlots = 6;
-    state.user = {studentId:cleanId, name:profile.name};
+    state.user = {studentId:username, name:profile.name};
     state.profile = profile;
     state.loginErr = "";
+    // Load dynamic challenges + announcement (non-blocking)
+    if(chapterCode !== INDEPENDENT_CODE){
+      getDynamicChallenges(chapterCode).then(m => { if(m){ state.dynamicMeetings = m; } });
+      getAnnouncement(chapterCode).then(a => { state.announcement = a; render(); });
+    }
     render();
   };
 }
@@ -478,15 +1229,47 @@ function attachLoginHandlers(){
 function totalStampCount(){ return state.profile.passport.length; }
 function totalHabitDaysDone(){
   let c = 0;
-  Object.values(state.profile.meetings).forEach(m => c += m.days.filter(Boolean).length);
-  state.profile.personalHabits.forEach(h => c += h.days.filter(Boolean).length);
+  Object.values(state.profile.meetings).forEach(m => c += countDone(m.days));
+  state.profile.personalHabits.forEach(h => c += countDone(h.days));
   return c;
 }
+function settingsScreen(){
+  return `
+  <div style="padding:20px 16px; max-width:480px; margin:0 auto;">
+    <h2 style="margin:0 0 18px; font-size:18px;">Settings</h2>
+
+    <div class="card" style="padding:20px;">
+      <h3 style="margin:0 0 14px; font-size:15px;">Change Password</h3>
+      <input type="password" id="settingsCurPw" placeholder="Current password" autocomplete="off" style="margin-bottom:10px;">
+      <input type="password" id="settingsNewPw" placeholder="New password" autocomplete="off" style="margin-bottom:10px;">
+      <input type="password" id="settingsConfirmPw" placeholder="Confirm new password" autocomplete="off" style="margin-bottom:10px;">
+      <button class="btn teal full" id="settingsSavePwBtn">Save new password</button>
+      <div id="settingsPwMsg" style="margin-top:8px;"></div>
+    </div>
+  </div>`;
+}
+
 function homeScreen(){
   const isIndependent = state.profile.chapterCode === INDEPENDENT_CODE;
+  const announceBanner = (!isIndependent && state.announcement && state.announcement.text) ?
+    `<div style="background:linear-gradient(135deg,var(--teal),var(--teal-deep));color:white;border-radius:16px;padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start;">
+      <span style="font-size:20px;flex-shrink:0;">📢</span>
+      <div><div style="font-weight:700;font-size:13px;margin-bottom:3px;">From your officers</div>
+      <div style="font-size:13px;opacity:.95;">${escapeHtml(state.announcement.text)}</div></div>
+    </div>` : '';
   const trophyCount = (state.profile.awards || []).length;
+  const av = state.profile.avatar || {emoji:'🌿', colorIdx:0};
+  const avColor = AVATAR_COLORS[av.colorIdx||0];
+  const avatarHtml = `
+    <div style="display:flex;align-items:center;gap:14px;background:${avColor.bg};border:2px solid ${avColor.accent}22;border-radius:20px;padding:14px 18px;margin-bottom:16px;cursor:pointer;" id="avatarGreetCard">
+      <div style="width:52px;height:52px;border-radius:50%;background:${avColor.accent}22;border:2px solid ${avColor.accent};display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">${av.emoji}</div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:${avColor.accent};">Hey, ${escapeHtml(state.profile.name.split(' ')[0])}! 👋</div>
+        <div style="font-size:12px;color:#8B7E6B;margin-top:1px;">Tap to customize your avatar</div>
+      </div>
+    </div>`;
   return `
-  <div class="hero">
+  ${announceBanner}${avatarHtml}<div class="hero">
     <div class="blob"></div>
     <h1>Welcome back, ${escapeHtml(state.profile.name)} 👋</h1>
     <p>Small habits, <span class="accent">big wins</span>. Keep your streaks going${isIndependent ? '' : ' and collect stamps at every event'}.</p>
@@ -504,6 +1287,8 @@ function homeScreen(){
   </div>`;
 }
 function attachHomeHandlers(){
+  const avCard = document.getElementById('avatarGreetCard');
+  if(avCard) avCard.onclick = () => showAvatarModal();
   document.querySelectorAll('[data-go]').forEach(el => {
     el.onclick = () => { state.view = el.getAttribute('data-go'); render(); };
   });
@@ -511,9 +1296,9 @@ function attachHomeHandlers(){
 
 /* ============ MEETINGS LIST ============ */
 function meetingsScreen(){
-  const rows = MEETINGS.map(m => {
+  const rows = getMeetings().map(m => {
     const prog = state.profile.meetings[m.n];
-    const done = prog ? prog.days.filter(Boolean).length : 0;
+    const done = prog ? countDone(prog.days) : 0;
     return `
     <div class="meeting-row" data-meeting="${m.n}">
       <div class="meeting-num">${m.n}</div>
@@ -531,15 +1316,49 @@ function attachMeetingsHandlers(){
   });
 }
 
+/* ---- Streak helper ---- */
+function getStreak(days){
+  let streak = 0;
+  for(let i = days.length - 1; i >= 0; i--){
+    if(getDayDone(days[i])){ streak++; }
+    else if(i < days.length - 1) break; // stop at first gap from the end
+  }
+  // Also check for a streak ending before the last empty days
+  if(streak === 0){
+    for(let i = days.length - 1; i >= 0; i--){
+      if(getDayDone(days[i])) break;
+    }
+    // Find longest current run from latest done
+    let lastDone = -1;
+    for(let i = days.length - 1; i >= 0; i--){ if(getDayDone(days[i])){ lastDone = i; break; } }
+    if(lastDone >= 0){
+      for(let i = lastDone; i >= 0; i--){
+        if(getDayDone(days[i])) streak++; else break;
+      }
+    }
+  }
+  return streak;
+}
+/* ---- Day value helpers (backward-compat: days[i] can be bool or {done,reflection}) ---- */
+function getDayDone(d){ return typeof d === 'object' && d !== null ? !!d.done : !!d; }
+function getDayReflection(d){ return (typeof d === 'object' && d !== null) ? (d.reflection||'') : ''; }
+function countDone(days){ return days.filter(getDayDone).length; }
+/* Returns the active meetings list — dynamic from Firestore if loaded, else hardcoded */
+function getMeetings(){ return state.dynamicMeetings || MEETINGS; }
+
 function dayGridHtml(days){
-  return days.map((d,i) => `<div class="day ${d?'done':''}" data-i="${i}"><span class="num">${i+1}</span></div>`).join("");
+  return days.map((d,i) => {
+    const done = getDayDone(d);
+    const hasNote = done && getDayReflection(d);
+    return `<div class="day ${done?'done':''} ${hasNote?'has-note':''}" data-i="${i}"><span class="num">${i+1}</span></div>`;
+  }).join("");
 }
 
 function meetingDetailScreen(num){
-  const m = MEETINGS.find(x=>x.n===num);
+  const m = getMeetings().find(x=>x.n===num);
   if(!state.profile.meetings[num]) state.profile.meetings[num] = {goal:"", days:new Array(30).fill(false)};
   const prog = state.profile.meetings[num];
-  const done = prog.days.filter(Boolean).length;
+  const done = countDone(prog.days);
   return `
   <button class="backlink" id="backToMeetings">← All meetings</button>
   <div class="card">
@@ -547,7 +1366,7 @@ function meetingDetailScreen(num){
     <h2 style="margin:4px 0 14px;">${escapeHtml(m.habit)}</h2>
     <label style="font-size:12px; font-weight:600; color:#8B7E6B;">Make it your own — add a personal twist or goal</label>
     <textarea id="goalInput" placeholder="e.g. I'll also journal 3 nights a week...">${escapeHtml(prog.goal)}</textarea>
-    <div class="progress-label">${done} / 30 days complete</div>
+    <div class="progress-label">${done} / 30 days complete${(()=>{const s=getStreak(prog.days);return s>=3?`<span class="streak-badge">🔥 ${s} day streak</span>`:'';})()} </div>
     <div class="day-grid" id="dayGrid">${dayGridHtml(prog.days)}</div>
   </div>`;
 }
@@ -561,13 +1380,27 @@ function attachMeetingsDetailHandlers(num){
     el.onclick = async () => {
       const i = parseInt(el.getAttribute('data-i'));
       const days = state.profile.meetings[num].days;
-      const before = days.filter(Boolean).length;
-      days[i] = !days[i];
-      const after = days.filter(Boolean).length;
-      await saveProfile(state.profile);
-      const m = MEETINGS.find(x=>x.n===num);
-      await handleMilestones(state.profile, before, after, 'meeting-'+num, `Meeting ${num}: ${m.habit}`, 'meeting');
-      render();
+      const before = countDone(days);
+      const wasDone = getDayDone(days[i]);
+      if(wasDone){
+        // Unchecking — just remove
+        days[i] = false;
+        const after = countDone(days);
+        await saveProfile(state.profile);
+        const m = getMeetings().find(x=>x.n===num);
+        await handleMilestones(state.profile, before, after, 'meeting-'+num, `Meeting ${num}: ${m.habit}`, 'meeting');
+        render();
+      } else {
+        // Checking — show reflection modal
+        showReflectionModal(async (reflection) => {
+          days[i] = reflection ? {done:true, reflection} : true;
+          const after = countDone(days);
+          await saveProfile(state.profile);
+          const m = getMeetings().find(x=>x.n===num);
+          await handleMilestones(state.profile, before, after, 'meeting-'+num, `Meeting ${num}: ${m.habit}`, 'meeting');
+          render();
+        });
+      }
     };
   });
 }
@@ -575,14 +1408,14 @@ function attachMeetingsDetailHandlers(num){
 /* ============ PERSONAL HABITS ============ */
 function habitsScreen(){
   const cards = state.profile.personalHabits.map(h => {
-    const done = h.days.filter(Boolean).length;
+    const done = countDone(h.days); const streak = getStreak(h.days);
     return `
     <div class="card habit-card">
       <div class="top-row">
         <h3 style="margin:0;">${escapeHtml(h.name)}</h3>
         <button class="remove-btn" data-remove="${h.id}">remove</button>
       </div>
-      <div class="progress-label">${done} / 30 days complete</div>
+      <div class="progress-label">${done} / 30 days complete${streak>=3?`<span class="streak-badge">🔥 ${streak} day streak</span>`:''}</div>
       <div class="day-grid" data-habit="${h.id}">${dayGridHtml(h.days)}</div>
     </div>`;
   }).join("");
@@ -619,12 +1452,23 @@ function attachHabitsHandlers(){
       el.onclick = async () => {
         const i = parseInt(el.getAttribute('data-i'));
         const habit = state.profile.personalHabits.find(h => h.id === id);
-        const before = habit.days.filter(Boolean).length;
-        habit.days[i] = !habit.days[i];
-        const after = habit.days.filter(Boolean).length;
-        await saveProfile(state.profile);
-        await handleMilestones(state.profile, before, after, 'habit-'+id, habit.name, 'personal');
-        render();
+        const before = countDone(habit.days);
+        const wasDone = getDayDone(habit.days[i]);
+        if(wasDone){
+          habit.days[i] = false;
+          const after = countDone(habit.days);
+          await saveProfile(state.profile);
+          await handleMilestones(state.profile, before, after, 'habit-'+id, habit.name, 'personal');
+          render();
+        } else {
+          showReflectionModal(async (reflection) => {
+            habit.days[i] = reflection ? {done:true, reflection} : true;
+            const after = countDone(habit.days);
+            await saveProfile(state.profile);
+            await handleMilestones(state.profile, before, after, 'habit-'+id, habit.name, 'personal');
+            render();
+          });
+        }
       };
     });
   });
@@ -637,8 +1481,8 @@ function passportScreen(){
   const tier = tierFor(stamps.length);
   const nextTier = TIERS.find(t => t.min > stamps.length);
   const cells = stamps.map(s => `
-    <div class="stamp-item">
-      <div class="stamp-icon">🌿</div>
+    <div class="stamp-item" ${s.color ? `style="border-color:${escapeHtml(s.color)};background:${escapeHtml(s.color)}22;"` : ''}>
+      <div class="stamp-icon">${s.logoData ? `<img src="${s.logoData}" style="width:32px;height:32px;border-radius:6px;object-fit:cover;">` : (s.emoji||'🌿')}</div>
       <div class="stamp-body">
         <div class="ev">${escapeHtml(s.eventName)}</div>
         <div class="dt">${escapeHtml(s.date)}</div>
@@ -657,6 +1501,15 @@ function passportScreen(){
   <div class="stamp-list">${cells}${emptyCells}</div>
   <div style="height:14px;"></div>
   <button class="btn ghost full" id="addSlotsBtn">+ Add more spaces</button>
+  ${state.profile.chapterCode !== INDEPENDENT_CODE ? `
+  <div style="height:18px;"></div>
+  <div class="card" id="chapterLbCard">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h3 style="margin:0;">🏅 Chapter Leaderboard</h3>
+      <button class="btn ghost" id="loadLbBtn" style="padding:5px 12px;font-size:12px;">Load</button>
+    </div>
+    <div id="chapterLbContent"><p style="font-size:13px;color:#8B7E6B;margin:0;">Tap Load to see how you rank in your chapter.</p></div>
+  </div>` : ''}
   `;
 }
 function attachPassportHandlers(){
@@ -665,6 +1518,27 @@ function attachPassportHandlers(){
     state.profile.passportSlots = (state.profile.passportSlots || 6) + 6;
     await saveProfile(state.profile);
     render();
+  };
+  const lbBtn = document.getElementById('loadLbBtn');
+  if(lbBtn) lbBtn.onclick = async () => {
+    const content = document.getElementById('chapterLbContent');
+    content.innerHTML = '<p style="font-size:13px;color:#8B7E6B;">Loading…</p>';
+    lbBtn.disabled = true;
+    const profiles = await listAllProfiles(state.profile.chapterCode);
+    const ranked = [...profiles].sort((a,b)=>b.passport.length-a.passport.length);
+    const myRank = ranked.findIndex(p=>p.studentId===state.profile.studentId)+1;
+    const html = ranked.slice(0,10).map((p,i)=>{
+      const isMe = p.studentId === state.profile.studentId;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);${isMe?'font-weight:700;color:var(--teal-deep);':''}">
+        <span style="width:22px;text-align:center;font-weight:700;color:#B0A490;">${i+1}</span>
+        <span style="flex:1;">${escapeHtml(p.name)}${isMe?' (you)':''}</span>
+        <span style="font-size:12px;color:#8B7E6B;">${p.passport.length} stamp${p.passport.length===1?'':'s'}</span>
+      </div>`;
+    }).join('');
+    content.innerHTML = html || '<p style="font-size:13px;color:#8B7E6B;">No members yet.</p>';
+    if(myRank > 10) content.innerHTML += `<p style="font-size:12px;color:#8B7E6B;margin-top:8px;">Your rank: #${myRank} of ${ranked.length}</p>`;
+    lbBtn.textContent = 'Refresh';
+    lbBtn.disabled = false;
   };
 }
 
@@ -677,14 +1551,14 @@ function awardsScreen(){
   // figure out in-progress challenges (not yet completed)
   const inProgress = [];
   Object.entries(state.profile.meetings || {}).forEach(([n, m]) => {
-    const done = m.days.filter(Boolean).length;
+    const done = countDone(m.days);
     if(done > 0 && done < 30){
-      const meeting = MEETINGS.find(x => x.n === parseInt(n));
+      const meeting = getMeetings().find(x => x.n === parseInt(n));
       inProgress.push({name: meeting ? `Meeting ${n}: ${meeting.habit}` : `Meeting ${n}`, done});
     }
   });
   (state.profile.personalHabits || []).forEach(h => {
-    const done = h.days.filter(Boolean).length;
+    const done = countDone(h.days);
     if(done > 0 && done < 30) inProgress.push({name: h.name, done});
   });
 
@@ -756,19 +1630,135 @@ function showStampModal(){
   document.body.appendChild(overlay);
   document.getElementById('closeStampBtn').onclick = () => overlay.remove();
   document.getElementById('submitStampBtn').onclick = async () => {
-    const code = document.getElementById('stampCode').value.trim();
+    const code = document.getElementById('stampCode').value.trim().toUpperCase();
     const msgEl = document.getElementById('stampMsg');
     if(!code){ msgEl.innerHTML = '<div class="msg err">Enter a passcode first.</div>'; return; }
+    msgEl.innerHTML = '<div class="msg" style="color:#8B7E6B;font-size:13px;">Checking...</div>';
+    // Check standard officer event
     const ev = await getOfficerEvent(state.profile.chapterCode);
-    if(!ev || !ev.passcode){ msgEl.innerHTML = '<div class="msg err">No event is active right now.</div>'; return; }
-    if(code.toUpperCase() !== ev.passcode.toUpperCase()){ msgEl.innerHTML = '<div class="msg err">That code does not match. Double check with your officer.</div>'; return; }
-    const already = state.profile.passport.some(s => s.passcode === ev.passcode);
-    if(already){ msgEl.innerHTML = '<div class="msg err">You already stamped this event!</div>'; return; }
-    state.profile.passport.push({eventName: ev.eventName, date: new Date().toLocaleDateString(), passcode: ev.passcode});
-    await saveProfile(state.profile);
-    msgEl.innerHTML = '<div class="msg ok">Stamped! 🎉</div>';
-    setTimeout(() => { overlay.remove(); render(); }, 900);
+    if(ev && ev.passcode && code === ev.passcode.toUpperCase()){
+      const already = state.profile.passport.some(s => s.passcode === ev.passcode.toUpperCase());
+      if(already){ msgEl.innerHTML = '<div class="msg err">You already stamped this event!</div>'; return; }
+      state.profile.passport.push({eventName: ev.eventName, date: new Date().toLocaleDateString(), passcode: ev.passcode.toUpperCase()});
+      await saveProfile(state.profile);
+      msgEl.innerHTML = '<div class="msg ok">Stamped! 🎉</div>';
+      setTimeout(() => { overlay.remove(); render(); }, 900);
+      return;
+    }
+    // Check custom stamps
+    const customStamps = await getCustomStamps(state.profile.chapterCode);
+    const now = Date.now(); const cs = customStamps.find(s => s.passcode && s.passcode.toUpperCase() === code && (!s.expiresAt || s.expiresAt > now));
+    if(cs){
+      const already = state.profile.passport.some(s => s.passcode === cs.passcode.toUpperCase());
+      if(already){ msgEl.innerHTML = '<div class="msg err">You already earned this stamp!</div>'; return; }
+      state.profile.passport.push({eventName: cs.name, date: new Date().toLocaleDateString(), passcode: cs.passcode.toUpperCase(), emoji: cs.emoji, color: cs.color});
+      await saveProfile(state.profile);
+      msgEl.innerHTML = `<div class="msg ok">${cs.emoji||'🎉'} Stamped!</div>`;
+      setTimeout(() => { overlay.remove(); render(); }, 900);
+      return;
+    }
+    msgEl.innerHTML = '<div class="msg err">That code doesn\'t match any active event. Check with your officer.</div>';
   };
+}
+
+function showAvatarModal(){
+  const av = state.profile.avatar || {emoji:'🌿', colorIdx:0};
+  const emojiGrid = AVATAR_EMOJIS.map((e,i)=>`<button class="av-emoji-btn ${av.emoji===e?'selected':''}" data-e="${e}" style="font-size:22px;width:42px;height:42px;border:2px solid ${av.emoji===e?'var(--teal)':'var(--line)'};border-radius:10px;background:${av.emoji===e?'var(--teal-light, #D4EAE0)':'var(--paper)'};cursor:pointer;">${e}</button>`).join('');
+  const colorGrid = AVATAR_COLORS.map((c,i)=>`<button class="av-color-btn ${(av.colorIdx||0)===i?'selected':''}" data-ci="${i}" style="width:34px;height:34px;border-radius:50%;background:${c.bg};border:3px solid ${(av.colorIdx||0)===i?c.accent:c.bg};box-shadow:${(av.colorIdx||0)===i?'0 0 0 2px '+c.accent:'none'};cursor:pointer;" title="${c.name}"></button>`).join('');
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h3 style="margin-top:0;">🎨 Your Avatar</h3>
+      <p style="font-size:12px;color:#8B7E6B;margin-top:-4px;">Pick an emoji and color — it'll greet you every time you log in.</p>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8B7E6B;margin-bottom:8px;">Emoji</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">${emojiGrid}</div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8B7E6B;margin-bottom:8px;">Color</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">${colorGrid}</div>
+      </div>
+      <div id="avPreview" style="text-align:center;padding:14px;border-radius:14px;background:#EDE8E0;margin-bottom:14px;font-size:14px;font-weight:600;"></div>
+      <button class="btn teal full" id="saveAvBtn">Save avatar</button>
+      <button class="btn ghost full" id="closeAvBtn" style="margin-top:8px;">Cancel</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  let curEmoji = av.emoji; let curColorIdx = av.colorIdx||0;
+  function updatePreview(){
+    const c = AVATAR_COLORS[curColorIdx];
+    document.getElementById('avPreview').style.background = c.bg;
+    document.getElementById('avPreview').style.color = c.accent;
+    document.getElementById('avPreview').innerHTML = `<span style="font-size:28px;">${curEmoji}</span><br>Hey, ${escapeHtml(state.profile.name.split(' ')[0])}!`;
+  }
+  updatePreview();
+  overlay.querySelectorAll('.av-emoji-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      curEmoji=btn.getAttribute('data-e');
+      overlay.querySelectorAll('.av-emoji-btn').forEach(b=>{ b.style.borderColor='var(--line)'; b.style.background='var(--paper)'; });
+      btn.style.borderColor='var(--teal)'; btn.style.background='#D4EAE0';
+      updatePreview();
+    };
+  });
+  overlay.querySelectorAll('.av-color-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      curColorIdx=parseInt(btn.getAttribute('data-ci'));
+      const c=AVATAR_COLORS[curColorIdx];
+      overlay.querySelectorAll('.av-color-btn').forEach(b=>{ b.style.border='3px solid '+AVATAR_COLORS[parseInt(b.getAttribute('data-ci'))].bg; b.style.boxShadow='none'; });
+      btn.style.border='3px solid '+c.accent; btn.style.boxShadow='0 0 0 2px '+c.accent;
+      updatePreview();
+    };
+  });
+  document.getElementById('saveAvBtn').onclick = async ()=>{
+    state.profile.avatar = {emoji:curEmoji, colorIdx:curColorIdx};
+    await saveProfile(state.profile);
+    overlay.remove(); render();
+  };
+  document.getElementById('closeAvBtn').onclick = ()=>overlay.remove();
+}
+
+function showQrModal(passcode, eventName){
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(passcode)}&bgcolor=F6F1E3&color=163E3B&qzone=1`;
+  overlay.innerHTML = `
+    <div class="modal" style="text-align:center;">
+      <h3 style="margin-top:0;">📱 ${escapeHtml(eventName)}</h3>
+      <p style="font-size:13px;color:#8B7E6B;margin-top:-4px;">Members scan this or type the passcode below.</p>
+      <img src="${qrUrl}" alt="QR code" style="width:180px;height:180px;border-radius:12px;border:2px solid var(--line);margin:8px auto;display:block;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block';">
+      <div id="qrFallback" style="display:none;font-size:12px;color:#8B7E6B;margin-bottom:8px;">QR unavailable offline — share the code below.</div>
+      <div style="font-size:28px;font-family:'Fredoka',sans-serif;font-weight:700;letter-spacing:4px;color:var(--teal-deep);background:var(--cream);border-radius:12px;padding:12px 20px;margin:10px 0;">${escapeHtml(passcode)}</div>
+      <button class="btn ghost full" id="closeQrBtn" style="margin-top:8px;">Close</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  document.getElementById('closeQrBtn').onclick = () => overlay.remove();
+}
+
+function showReflectionModal(onSave){
+  const overlay = document.createElement('div');
+  overlay.className = 'reflection-overlay';
+  overlay.innerHTML = `
+    <div class="reflection-modal">
+      <h3>🌟 Great work!</h3>
+      <p>Add a quick wellness reflection (optional — press Skip to just log the day).</p>
+      <textarea id="reflText" placeholder="e.g. Felt more focused after this. Drank water right when I woke up…" maxlength="300"></textarea>
+      <div style="text-align:right; font-size:11px; color:#B0A490; margin-top:3px;"><span id="reflCount">0</span>/300</div>
+      <div class="btn-row">
+        <button class="btn ghost" id="reflSkipBtn">Skip</button>
+        <button class="btn teal" id="reflSaveBtn">Save note →</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const ta = document.getElementById('reflText');
+  const counter = document.getElementById('reflCount');
+  ta.addEventListener('input', () => counter.textContent = ta.value.length);
+  document.getElementById('reflSkipBtn').onclick = () => { overlay.remove(); onSave(''); };
+  document.getElementById('reflSaveBtn').onclick = () => {
+    const val = ta.value.trim();
+    overlay.remove();
+    onSave(val);
+  };
+  setTimeout(() => ta.focus(), 60);
 }
 
 async function showOfficerStampModal(chapterCode, studentId, studentName){
@@ -805,6 +1795,243 @@ async function showOfficerStampModal(chapterCode, studentId, studentName){
 }
 
 /* ============ OFFICER MODE ============ */
+/* ============ LEADER SCREEN (from main login) ============ */
+function leaderScreen(){
+  if(!state.leaderVerified){
+    return `
+    <div class="login-wrap"><div class="card login-card">
+      <img class="login-logo" src="${LOGO_SRC}" alt="Teen Wellness Society logo">
+      <h2 style="margin-top:0;">Leader Login</h2>
+      <p style="font-size:13px; color:#8B7E6B; margin-top:-6px;">Enter your chapter code and officer passcode to access the leader dashboard.</p>
+      <input type="text" id="leaderChapterInput" placeholder="Chapter code" style="text-transform:uppercase;">
+      <input type="password" id="leaderCodeInput" placeholder="Officer passcode" autocomplete="off">
+      <button class="btn teal full" id="leaderEnterBtn">Enter leader dashboard →</button>
+      ${state.leaderErr ? `<div class="msg err">${state.leaderErr}</div>` : ''}
+      <button class="btn ghost full" id="leaderBackBtn" style="margin-top:10px;">← Back to login</button>
+    </div></div>`;
+  }
+  const ch = state.leaderChapter;
+  return `
+  <div class="login-wrap" style="max-width:520px;margin:0 auto;">
+    <div class="topbar" style="padding:16px 0 10px;">
+      <div class="brand"><div class="mark"><img src="${LOGO_SRC}" alt="TWS"></div>
+        <div class="name">Leader Dashboard<small>Chapter: ${escapeHtml(ch)}</small></div>
+      </div>
+      <button class="btn ghost" id="leaderExitBtn" style="padding:8px 14px;">Exit</button>
+    </div>
+    <div class="leader-tabs">
+      <button class="${state.leaderTab==='members'?'active':''}" data-ltab="members">👥 Members</button>
+      <button class="${state.leaderTab==='stamps'?'active':''}" data-ltab="stamps">🎨 Stamps</button>
+      <button class="${state.leaderTab==='challenges'?'active':''}" data-ltab="challenges">📅 Challenges</button>
+    </div>
+    <div id="leaderTabContent"></div>
+  </div>`;
+}
+
+function attachLeaderHandlers(){
+  if(!state.leaderVerified){
+    document.getElementById('leaderBackBtn').onclick = () => { state.leaderMode = false; state.leaderErr = ""; render(); };
+    document.getElementById('leaderEnterBtn').onclick = async () => {
+      const chapter = (document.getElementById('leaderChapterInput').value.trim().toUpperCase() || "").replace(/\s+/g,'');
+      const code = document.getElementById('leaderCodeInput').value.trim();
+      if(!chapter || !code){ state.leaderErr = "Enter both chapter code and officer passcode."; render(); return; }
+      const errEl = document.getElementById('leaderCodeInput').closest('.card');
+      document.getElementById('leaderCodeInput').disabled = true;
+      document.getElementById('leaderEnterBtn').disabled = true;
+      const config = await getChapterConfig(chapter);
+      const validCode = (config && config.officerCode) ? config.officerCode : OFFICER_CODE;
+      if(code === validCode){
+        state.leaderVerified = true;
+        state.leaderChapter = chapter;
+        state.leaderErr = "";
+        render();
+        renderLeaderTab();
+      } else {
+        state.leaderErr = "Incorrect passcode. Check with your chapter president.";
+        document.getElementById('leaderCodeInput').disabled = false;
+        document.getElementById('leaderEnterBtn').disabled = false;
+        render();
+      }
+    };
+    return;
+  }
+  document.getElementById('leaderExitBtn').onclick = () => { state.leaderMode = false; state.leaderVerified = false; state.leaderChapter = ""; render(); };
+  document.querySelectorAll('[data-ltab]').forEach(btn => {
+    btn.onclick = () => { state.leaderTab = btn.getAttribute('data-ltab'); renderLeaderTab(); };
+  });
+  renderLeaderTab();
+}
+
+async function renderLeaderTab(){
+  const ch = state.leaderChapter;
+  const container = document.getElementById('leaderTabContent');
+  if(!container) return;
+  container.innerHTML = '<div class="card"><p style="color:#8B7E6B;font-size:13px;">Loading…</p></div>';
+
+  if(state.leaderTab === 'members'){
+    const profiles = await listAllProfiles(ch);
+    const ev = await getOfficerEvent(ch);
+    const sorted = [...profiles].sort((a,b)=>a.name.localeCompare(b.name));
+    const memberHtml = sorted.map(p=>`
+      <div class="meeting-row">
+        <div class="meta"><div class="h">${escapeHtml(p.name)}</div><div class="m">@${escapeHtml(p.studentId)} · ${p.passport.length} stamp${p.passport.length===1?'':'s'}</div></div>
+        <button class="btn teal" style="padding:6px 10px;font-size:12px;flex-shrink:0;" data-lstamp-id="${escapeHtml(p.studentId)}" data-lstamp-name="${escapeHtml(p.name)}">＋ stamp</button>
+      </div>`).join("") || '<div class="empty-state">No members yet.</div>';
+    container.innerHTML = `
+      <div class="card">
+        <h3 style="margin-top:0;">📢 Chapter Announcement</h3>
+        <p style="font-size:12px;color:#8B7E6B;margin-top:-4px;">Post a message that all chapter members see on their home screen.</p>
+        <textarea id="lAnnounceText" placeholder="e.g. Meeting Friday at 3pm! Don't forget your passcode." style="min-height:70px;" maxlength="300">${escapeHtml((state.announcement&&state.announcement.text)||'')}</textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button class="btn teal" id="lPostAnnounce" style="flex:1;">Post announcement</button>
+          ${state.announcement ? '<button class="btn ghost" id="lClearAnnounce" style="flex:1;">Clear</button>' : ''}
+        </div>
+        <div id="lAnnounceMsg"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0;">Active Event</h3>
+        ${ev ? `<p style="font-size:14px;"><b>${escapeHtml(ev.eventName)}</b> — code: <b>${escapeHtml(ev.passcode)}</b></p>` : '<p style="font-size:13px;color:#8B7E6B;">No active event set.</p>'}
+        <input type="text" id="lEvName" placeholder="Event name">
+        <input type="text" id="lEvCode" placeholder="Passcode">
+        <button class="btn teal full" id="lSetEventBtn">Set / rotate event code</button>
+        ${ev ? `<button class="btn ghost full" id="lQrBtn" style="margin-top:8px;">📱 Show QR code for members</button>` : ''}
+      </div>
+      <div class="card"><h3 style="margin-top:0;">Members</h3>${memberHtml}</div>`;
+    const qrBtn = document.getElementById('lQrBtn');
+    if(qrBtn) qrBtn.onclick = () => showQrModal(ev.passcode, ev.eventName);
+    const postBtn = document.getElementById('lPostAnnounce');
+    if(postBtn) postBtn.onclick = async () => {
+      const text = document.getElementById('lAnnounceText').value.trim();
+      const msgEl = document.getElementById('lAnnounceMsg');
+      if(!text){msgEl.innerHTML='<div class="msg err">Write something first.</div>';return;}
+      const ok = await setAnnouncement(ch, text);
+      if(ok){ state.announcement = {text, createdAt:Date.now()}; msgEl.innerHTML='<div class="msg ok">Posted! Members will see this on their home screen.</div>'; }
+      else { msgEl.innerHTML='<div class="msg err">Failed to post. Check your connection.</div>'; }
+    };
+    const clearBtn = document.getElementById('lClearAnnounce');
+    if(clearBtn) clearBtn.onclick = async () => {
+      await clearAnnouncement(ch);
+      state.announcement = null;
+      document.getElementById('lAnnounceMsg').innerHTML='<div class="msg ok">Announcement cleared.</div>';
+      setTimeout(()=>renderLeaderTab(),900);
+    };
+    document.getElementById('lSetEventBtn').onclick = async () => {
+      const name = document.getElementById('lEvName').value.trim();
+      const code = document.getElementById('lEvCode').value.trim();
+      if(!name||!code) return;
+      await setOfficerEvent(ch,{eventName:name,passcode:code,createdAt:Date.now()});
+      renderLeaderTab();
+    };
+    document.querySelectorAll('[data-lstamp-id]').forEach(btn=>{
+      btn.onclick = () => showOfficerStampModal(ch, btn.getAttribute('data-lstamp-id'), btn.getAttribute('data-lstamp-name'));
+    });
+  }
+
+  else if(state.leaderTab === 'stamps'){
+    const stamps = await getCustomStamps(ch);
+    const stampChips = stamps.map(s=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:8px;background:${escapeHtml(s.color||'#EDE8E0')};border-radius:12px;margin-bottom:8px;">
+        ${s.logoData ? `<img src="${s.logoData}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0;">` : `<span style="font-size:22px;">${escapeHtml(s.emoji||'🏅')}</span>`}
+        <div style="flex:1;"><div style="font-weight:600;font-size:13px;">${escapeHtml(s.name)}</div><div style="font-size:11px;color:#8B7E6B;">Passcode: <b>${escapeHtml(s.passcode)}</b>${s.expiresAt?` · Expires ${new Date(s.expiresAt).toLocaleDateString()}`:''}</div></div>
+        <button class="remove-btn" data-del-stamp="${escapeHtml(s.id)}">remove</button>
+      </div>`).join("") || '<p style="font-size:13px;color:#8B7E6B;">No custom stamps yet.</p>';
+    container.innerHTML = `
+      <div class="card">
+        <h3 style="margin-top:0;">🎨 Custom Stamp Designer</h3>
+        <p style="font-size:12px;color:#8B7E6B;margin-top:-6px;">Create stamps for collaboration events, workshops, or special meetings. Members claim them with the passcode.</p>
+        <div class="stamp-designer-row" style="align-items:flex-start;gap:10px;">
+          <div id="csLogoPreview" style="width:56px;height:56px;border-radius:12px;border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;cursor:pointer;overflow:hidden;position:relative;" title="Click to upload logo">
+            <span id="csLogoEmoji">🏅</span>
+            <input type="file" id="csLogoFile" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;">
+          </div>
+          <div style="flex:1;">
+            <input type="text" id="csEmoji" placeholder="Emoji (or upload logo →)" maxlength="4" style="width:100%;margin-bottom:8px;">
+            <input type="text" id="csName" placeholder="Stamp name" maxlength="50" style="width:100%;box-sizing:border-box;">
+          </div>
+        </div>
+        <p style="font-size:11px;color:#B0A490;margin:2px 0 8px;">💡 Upload a logo image OR type an emoji — logo takes priority if both set. Paste an image (Ctrl/Cmd+V) anywhere.</p>
+        <div class="stamp-designer-row">
+          <input type="text" id="csPasscode" placeholder="Passcode (members enter this)" maxlength="20" style="flex:1;">
+          <input type="color" id="csColor" value="#D4EAE0" style="width:48px;height:40px;padding:4px;border-radius:8px;border:2px solid var(--line);cursor:pointer;flex:none;">
+        </div>
+        <label style="font-size:11px;color:#8B7E6B;display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span>Expires (optional):</span>
+          <input type="date" id="csExpiry" style="font-size:12px;padding:6px 8px;border-radius:8px;border:2px solid var(--line);font-family:inherit;flex:1;">
+        </label>
+        <button class="btn teal full" id="csAddBtn">Create stamp</button>
+        <div id="csMsg"></div>
+      </div>
+      <div class="card"><h3 style="margin-top:0;">Active Stamps</h3>${stampChips}</div>`;
+    // Wire logo upload for leader stamp designer
+    let _csLogoDataL = null;
+    async function handleLogoFileL(file){
+      if(!file||!file.type.startsWith('image/')) return;
+      const bmp = await createImageBitmap(file);
+      const cv = document.createElement('canvas'); cv.width=60; cv.height=60;
+      const ctx = cv.getContext('2d');
+      const s = Math.min(bmp.width,bmp.height);
+      const sx=(bmp.width-s)/2, sy=(bmp.height-s)/2;
+      ctx.drawImage(bmp,sx,sy,s,s,0,0,60,60);
+      _csLogoDataL = cv.toDataURL('image/jpeg',0.75);
+      const logoEmojiEl = document.getElementById('csLogoEmoji');
+      if(logoEmojiEl) logoEmojiEl.style.display='none';
+      const preview = document.getElementById('csLogoPreview');
+      if(preview){ const img = document.createElement('img'); img.src=_csLogoDataL; img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:10px;position:absolute;inset:0;'; preview.appendChild(img); }
+    }
+    const lf = document.getElementById('csLogoFile');
+    if(lf) lf.onchange = e => handleLogoFileL(e.target.files[0]);
+    document._leaderPasteH = e => { const item=[...(e.clipboardData?.items||[])].find(i=>i.type.startsWith('image/')); if(item) handleLogoFileL(item.getAsFile()); };
+    document.removeEventListener('paste',document._leaderPasteH);
+    document.addEventListener('paste',document._leaderPasteH);
+    document.getElementById('csAddBtn').onclick = async () => {
+      const emoji = _csLogoDataL ? '' : (document.getElementById('csEmoji').value.trim() || '\U0001f3c5');
+      const name = document.getElementById('csName').value.trim();
+      const passcode = document.getElementById('csPasscode').value.trim().toUpperCase();
+      const color = document.getElementById('csColor').value;
+      const msgEl = document.getElementById('csMsg');
+      if(!name||!passcode){msgEl.innerHTML='<div class="msg err">Name and passcode are required.</div>';return;}
+      const expiryEl=document.getElementById('csExpiry'); const expiry = expiryEl&&expiryEl.value ? new Date(expiryEl.value).getTime() : null;
+      const stamp = {id:'cs'+Date.now(),emoji,name,passcode,color,logoData:_csLogoDataL||null,expiresAt:expiry,createdAt:Date.now()};
+      await saveCustomStamp(ch, stamp);
+      _csLogoDataL = null;
+      msgEl.innerHTML = '<div class="msg ok">Stamp created! \U0001f389</div>';
+      setTimeout(()=>renderLeaderTab(),900);
+    };
+    document.querySelectorAll('[data-del-stamp]').forEach(btn=>{
+      btn.onclick = async () => {
+        await deleteCustomStamp(ch, btn.getAttribute('data-del-stamp'));
+        renderLeaderTab();
+      };
+    });
+  }
+
+  else if(state.leaderTab === 'challenges'){
+    const current = state.dynamicMeetings || await getDynamicChallenges(ch) || MEETINGS;
+    const rows = MEETINGS.map(m => {
+      const cur = current.find(x=>x.n===m.n) || m;
+      return `<div class="challenge-row"><span class="month-label">${m.month}</span><input type="text" class="ch-input" data-n="${m.n}" value="${escapeHtml(cur.habit)}" maxlength="80"></div>`;
+    }).join("");
+    container.innerHTML = `
+      <div class="card">
+        <h3 style="margin-top:0;">📅 Monthly Challenges</h3>
+        <p style="font-size:12px;color:#8B7E6B;margin-top:-6px;">Edit the habit challenge for each meeting month. Members in your chapter will see these changes immediately.</p>
+        ${rows}
+        <button class="btn teal full" id="chSaveBtn" style="margin-top:12px;">Save challenges</button>
+        <div id="chMsg"></div>
+      </div>`;
+    document.getElementById('chSaveBtn').onclick = async () => {
+      const inputs = document.querySelectorAll('.ch-input');
+      const updated = MEETINGS.map(m=>{
+        const inp = [...inputs].find(x=>parseInt(x.getAttribute('data-n'))===m.n);
+        return {n:m.n, month:m.month, habit:inp ? inp.value.trim()||m.habit : m.habit};
+      });
+      const ok = await saveDynamicChallenges(ch, updated);
+      if(ok){ state.dynamicMeetings = updated; document.getElementById('chMsg').innerHTML='<div class="msg ok">Challenges saved! Members will see these updates.</div>'; }
+      else { document.getElementById('chMsg').innerHTML='<div class="msg err">Failed to save. Check your connection.</div>'; }
+    };
+  }
+}
+
 function officerScreen(){
   if(!state.officerVerified){
     return `
@@ -858,48 +2085,166 @@ async function renderOfficerBody(){
     <div class="app" style="padding-top:20px;">
       <div class="topbar" style="padding:0 0 10px;"><h2 style="margin:0;">Officer Mode</h2>
         <button class="btn ghost" id="officerExitBtn" style="padding:8px 14px;">Exit</button></div>
-      <div class="card">
-        <h3 style="margin-top:0;">Current event</h3>
-        ${ev ? `<p style="font-size:14px;"><b>${escapeHtml(ev.eventName)}</b> — passcode <b>${escapeHtml(ev.passcode)}</b></p>` : '<p style="font-size:13px; color:#8B7E6B;">No active event.</p>'}
-        <input type="text" id="evName" placeholder="Event name (e.g. October Meeting)">
-        <input type="text" id="evCode" placeholder="New passcode (e.g. a 4-digit code)">
-        <button class="btn teal full" id="setEventBtn">Set / rotate event code</button>
+      <div class="leader-tabs" id="officerTabBar">
+        <button class="${state.leaderTab==='members'?'active':''}" data-otab="members">👥 Members</button>
+        <button class="${state.leaderTab==='stamps'?'active':''}" data-otab="stamps">🎨 Stamps</button>
+        <button class="${state.leaderTab==='challenges'?'active':''}" data-otab="challenges">📅 Challenges</button>
       </div>
-      <div class="card">
-        <h3 style="margin-top:0;">Leaderboard</h3>
-        ${lbHtml}
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0;">Manage Members</h3>
-        <p style="font-size:12px; color:#8B7E6B; margin-top:-6px;">Remove test accounts or students who left. This deletes their profile, habit progress, and stamps permanently.</p>
-        ${memberHtml}
-      </div>
+      <div id="officerTabContent"></div>
     </div>`;
   document.getElementById('officerExitBtn').onclick = () => { state.officerMode = false; state.officerVerified = false; render(); };
-  document.getElementById('setEventBtn').onclick = async () => {
-    const name = document.getElementById('evName').value.trim();
-    const code = document.getElementById('evCode').value.trim();
-    if(!name || !code) return;
-    await setOfficerEvent(chapterCode, {eventName:name, passcode:code, createdAt:Date.now()});
-    renderOfficerBody();
-  };
-  document.querySelectorAll('[data-remove-student]').forEach(btn => {
-    btn.onclick = () => {
-      const id = btn.getAttribute('data-remove-student');
-      const name = btn.closest('.meeting-row').querySelector('.h').textContent;
-      showConfirmModal(`Remove ${name} and all their data? This cannot be undone.`, async () => {
-        await deleteProfile(chapterCode, id);
+  document.querySelectorAll('[data-otab]').forEach(btn=>{
+    btn.onclick = () => { state.leaderTab = btn.getAttribute('data-otab'); renderOfficerTabContent(chapterCode, ev, profiles, leaderboard, lbHtml, allSorted, memberHtml); };
+  });
+  renderOfficerTabContent(chapterCode, ev, profiles, leaderboard, lbHtml, allSorted, memberHtml);
+  function renderOfficerTabContent(cc, ev, profiles, lb, lbHtml, allSorted, memberHtml){
+    const tab = state.leaderTab;
+    const tcEl = document.getElementById('officerTabContent');
+    if(!tcEl) return;
+    if(tab==='members'){
+      tcEl.innerHTML = `
+        <div class="card">
+          <h3 style="margin-top:0;">📢 Chapter Announcement</h3>
+          <p style="font-size:12px;color:#8B7E6B;margin-top:-4px;">Post a message all chapter members see on their home screen.</p>
+          <textarea id="oAnnounceText" placeholder="e.g. Next meeting is Thursday at lunch!" style="min-height:70px;" maxlength="300">${escapeHtml((state.announcement&&state.announcement.text)||'')}</textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="btn teal" id="oPostAnnounce" style="flex:1;">Post</button>
+            ${state.announcement ? '<button class="btn ghost" id="oClearAnnounce" style="flex:1;">Clear</button>' : ''}
+          </div>
+          <div id="oAnnounceMsg"></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">Current event</h3>
+          ${ev ? `<p style="font-size:14px;"><b>${escapeHtml(ev.eventName)}</b> — passcode <b>${escapeHtml(ev.passcode)}</b></p>` : '<p style="font-size:13px; color:#8B7E6B;">No active event.</p>'}
+          <input type="text" id="evName" placeholder="Event name (e.g. October Meeting)">
+          <input type="text" id="evCode" placeholder="New passcode (e.g. a 4-digit code)">
+          <button class="btn teal full" id="setEventBtn">Set / rotate event code</button>
+          ${ev ? `<button class="btn ghost full" id="qrBtn" style="margin-top:8px;">📱 Show QR code for members</button>` : ''}
+        </div>
+        <div class="card"><h3 style="margin-top:0;">Leaderboard</h3>${lbHtml}</div>
+        <div class="card">
+          <h3 style="margin-top:0;">Manage Members</h3>
+          <p style="font-size:12px; color:#8B7E6B; margin-top:-6px;">Remove test accounts or students who left. This deletes their profile permanently.</p>
+          ${memberHtml}
+        </div>`;
+      const oPostBtn = document.getElementById('oPostAnnounce');
+      if(oPostBtn) oPostBtn.onclick = async () => {
+        const text = document.getElementById('oAnnounceText').value.trim();
+        const msgEl = document.getElementById('oAnnounceMsg');
+        if(!text){msgEl.innerHTML='<div class="msg err">Write something first.</div>';return;}
+        const ok = await setAnnouncement(cc, text);
+        if(ok){ state.announcement={text,createdAt:Date.now()}; msgEl.innerHTML='<div class="msg ok">Posted!</div>'; }
+        else { msgEl.innerHTML='<div class="msg err">Failed.</div>'; }
+      };
+      const oClearBtn = document.getElementById('oClearAnnounce');
+      if(oClearBtn) oClearBtn.onclick = async () => {
+        await clearAnnouncement(cc); state.announcement=null;
+        document.getElementById('oAnnounceMsg').innerHTML='<div class="msg ok">Cleared.</div>';
+        setTimeout(()=>renderOfficerBody(),900);
+      };
+      const qrBtnO = document.getElementById('qrBtn');
+      if(qrBtnO) qrBtnO.onclick = () => showQrModal(ev.passcode, ev.eventName);
+      document.getElementById('setEventBtn').onclick = async () => {
+      const name = document.getElementById('evName').value.trim();
+        const code = document.getElementById('evCode').value.trim();
+        if(!name || !code) return;
+        await setOfficerEvent(cc, {eventName:name, passcode:code, createdAt:Date.now()});
         renderOfficerBody();
+      };
+      document.querySelectorAll('[data-remove-student]').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.getAttribute('data-remove-student');
+          const name = btn.closest('.meeting-row').querySelector('.h').textContent;
+          showConfirmModal(`Remove ${name} and all their data? This cannot be undone.`, async () => {
+            await deleteProfile(cc, id);
+            renderOfficerBody();
+          });
+        };
       });
-    };
-  });
-  document.querySelectorAll('[data-stamp-student]').forEach(btn => {
-    btn.onclick = () => {
-      const id = btn.getAttribute('data-stamp-student');
-      const name = btn.getAttribute('data-stamp-name');
-      showOfficerStampModal(chapterCode, id, name);
-    };
-  });
+      document.querySelectorAll('[data-stamp-student]').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.getAttribute('data-stamp-student');
+          const name = btn.getAttribute('data-stamp-name');
+          showOfficerStampModal(cc, id, name);
+        };
+      });
+    } else if(tab==='stamps'){
+      // Reuse leader stamp designer
+      state.leaderChapter = cc;
+      tcEl.innerHTML = '<div class="card"><p style="color:#8B7E6B;font-size:13px;">Loading stamps…</p></div>';
+      getCustomStamps(cc).then(stamps => {
+        const stampChips = stamps.map(s=>`
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:${escapeHtml(s.color||'#EDE8E0')};border-radius:12px;margin-bottom:8px;">
+            <span style="font-size:22px;">${escapeHtml(s.emoji||'🏅')}</span>
+            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">${escapeHtml(s.name)}</div><div style="font-size:11px;color:#8B7E6B;">Passcode: <b>${escapeHtml(s.passcode)}</b></div></div>
+            <button class="remove-btn" data-del-stamp="${escapeHtml(s.id)}">remove</button>
+          </div>`).join("") || '<p style="font-size:13px;color:#8B7E6B;">No custom stamps yet.</p>';
+        tcEl.innerHTML = `
+          <div class="card">
+            <h3 style="margin-top:0;">🎨 Custom Stamp Designer</h3>
+            <p style="font-size:12px;color:#8B7E6B;margin-top:-6px;">Create stamps for special collaboration events. Members claim them with the passcode.</p>
+            <div class="stamp-designer-row">
+              <input type="text" id="csEmoji" placeholder="Emoji" maxlength="4" style="width:70px;flex:none;">
+              <input type="text" id="csName" placeholder="Stamp name" maxlength="50" style="flex:1;">
+            </div>
+            <div class="stamp-designer-row">
+              <input type="text" id="csPasscode" placeholder="Passcode" maxlength="20" style="flex:1;">
+              <input type="color" id="csColor" value="#D4EAE0" style="width:48px;height:40px;padding:4px;border-radius:8px;border:2px solid var(--line);cursor:pointer;flex:none;">
+            </div>
+            <label style="font-size:11px;color:#8B7E6B;display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <span>Expires:</span>
+              <input type="date" id="csExpiry" style="font-size:12px;padding:6px 8px;border-radius:8px;border:2px solid var(--line);font-family:inherit;flex:1;">
+            </label>
+            <button class="btn teal full" id="csAddBtn">Create stamp</button>
+            <div id="csMsg"></div>
+          </div>
+          <div class="card"><h3 style="margin-top:0;">Active Stamps</h3>${stampChips}</div>`;
+        document.getElementById('csAddBtn').onclick = async () => {
+          const emoji = document.getElementById('csEmoji').value.trim() || '🏅';
+          const name = document.getElementById('csName').value.trim();
+          const passcode = document.getElementById('csPasscode').value.trim().toUpperCase();
+          const color = document.getElementById('csColor').value;
+          const msgEl = document.getElementById('csMsg');
+          if(!name||!passcode){msgEl.innerHTML='<div class="msg err">Name and passcode required.</div>';return;}
+          const expiryEl=document.getElementById('csExpiry'); const expiry = expiryEl&&expiryEl.value ? new Date(expiryEl.value).getTime() : null;
+          const stamp = {id:'cs'+Date.now(),emoji,name,passcode,color,expiresAt:expiry,createdAt:Date.now()};
+          await saveCustomStamp(cc, stamp);
+          msgEl.innerHTML='<div class="msg ok">Stamp created! 🎉</div>';
+          setTimeout(()=>renderOfficerBody(),900);
+        };
+        document.querySelectorAll('[data-del-stamp]').forEach(btn=>{
+          btn.onclick = async()=>{ await deleteCustomStamp(cc, btn.getAttribute('data-del-stamp')); renderOfficerBody(); };
+        });
+      });
+    } else if(tab==='challenges'){
+      tcEl.innerHTML = '<div class="card"><p style="color:#8B7E6B;font-size:13px;">Loading challenges…</p></div>';
+      getDynamicChallenges(cc).then(dynamic => {
+        const current = dynamic || MEETINGS;
+        const rows = MEETINGS.map(m => {
+          const cur = current.find(x=>x.n===m.n) || m;
+          return `<div class="challenge-row"><span class="month-label">${m.month}</span><input type="text" class="ch-input" data-n="${m.n}" value="${escapeHtml(cur.habit)}" maxlength="80"></div>`;
+        }).join("");
+        tcEl.innerHTML = `
+          <div class="card">
+            <h3 style="margin-top:0;">📅 Monthly Challenges</h3>
+            <p style="font-size:12px;color:#8B7E6B;margin-top:-6px;">Edit each month's challenge. All chapter members will see these updates.</p>
+            ${rows}
+            <button class="btn teal full" id="chSaveBtn" style="margin-top:12px;">Save challenges</button>
+            <div id="chMsg"></div>
+          </div>`;
+        document.getElementById('chSaveBtn').onclick = async () => {
+          const inputs = document.querySelectorAll('.ch-input');
+          const updated = MEETINGS.map(m=>{
+            const inp = [...inputs].find(x=>parseInt(x.getAttribute('data-n'))===m.n);
+            return {n:m.n,month:m.month,habit:inp?inp.value.trim()||m.habit:m.habit};
+          });
+          const ok = await saveDynamicChallenges(cc, updated);
+          if(ok){ state.dynamicMeetings = updated; document.getElementById('chMsg').innerHTML='<div class="msg ok">Saved! Members will see these challenges.</div>'; }
+          else { document.getElementById('chMsg').innerHTML='<div class="msg err">Failed to save.</div>'; }
+        };
+      });
+    }
+  }
 }
 
 /* ============ COMMON ============ */
@@ -911,6 +2256,28 @@ function attachCommonHandlers(){
   const officerBtn = document.getElementById('officerEntryBtn');
   if(officerBtn) officerBtn.onclick = () => { state.officerMode = true; render(); };
   if(state.view === 'meetings' && state.detailMeeting){ attachMeetingsDetailHandlers(state.detailMeeting); }
+
+  // Settings screen handlers
+  const savePwBtn = document.getElementById('settingsSavePwBtn');
+  if(savePwBtn){
+    savePwBtn.onclick = async () => {
+      const curPw = document.getElementById('settingsCurPw').value;
+      const newPw = document.getElementById('settingsNewPw').value;
+      const confirmPw = document.getElementById('settingsConfirmPw').value;
+      const msg = document.getElementById('settingsPwMsg');
+      if(!curPw || !newPw || !confirmPw){ msg.innerHTML = '<div class="msg err">Please fill in all fields.</div>'; return; }
+      if(state.profile.password && state.profile.password !== curPw){ msg.innerHTML = '<div class="msg err">Current password is incorrect.</div>'; return; }
+      if(newPw !== confirmPw){ msg.innerHTML = '<div class="msg err">New passwords don't match.</div>'; return; }
+      if(newPw.length < 4){ msg.innerHTML = '<div class="msg err">Password must be at least 4 characters.</div>'; return; }
+      msg.innerHTML = '<div class="msg" style="color:#8B7E6B;font-size:13px;">Saving...</div>';
+      state.profile.password = newPw;
+      await saveProfile(state.profile);
+      msg.innerHTML = '<div class="msg ok">Password updated!</div>';
+      document.getElementById('settingsCurPw').value = '';
+      document.getElementById('settingsNewPw').value = '';
+      document.getElementById('settingsConfirmPw').value = '';
+    };
+  }
 }
 
 /* ============ PRESIDENT MODE ============ */
@@ -961,6 +2328,40 @@ function presidentScreen(){
 
   const btnStyle = 'background:none;border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:999px;padding:3px 11px;font-size:11px;cursor:pointer;font-family:inherit;transition:background .15s;';
 
+  // Notifications tab
+  if(state.presidentTab === 'notifications'){
+    let notifContent = '';
+    if(state.presidentNotifsLoading){
+      notifContent = '<div style="color:#8B7E6B;padding:20px;text-align:center;">Loading requests...</div>';
+    } else if(!state.presidentNotifs){
+      notifContent = '<div style="color:#8B7E6B;padding:20px;text-align:center;">Loading...</div>';
+    } else if(state.presidentNotifs.length === 0){
+      notifContent = '<div style="color:#8B7E6B;padding:20px;text-align:center;">No pending password reset requests.</div>';
+    } else {
+      notifContent = state.presidentNotifs.map(req => {
+        const timeStr = req.requestedAt ? new Date(req.requestedAt).toLocaleString() : '';
+        return `<div style="border:1px solid #EDE8E0;border-radius:12px;padding:14px 16px;margin-bottom:10px;background:#fff;">
+          <div style="font-weight:600;font-size:14px;">${escapeHtml(req.name||'')}</div>
+          <div style="font-size:12px;color:#8B7E6B;margin:2px 0 8px;">@${escapeHtml(req.username||'')} · Chapter ${escapeHtml(req.chapterCode||'')} · ${timeStr}</div>
+          <div style="display:flex;gap:8px;">
+            <button class="notif-approve-btn btn teal" data-chapter="${escapeHtml(req.chapterCode)}" data-username="${escapeHtml(req.username)}" style="font-size:12px;padding:4px 14px;">Approve</button>
+            <button class="notif-deny-btn btn ghost" data-chapter="${escapeHtml(req.chapterCode)}" data-username="${escapeHtml(req.username)}" style="font-size:12px;padding:4px 14px;">Deny</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    return `
+    <div style="padding:20px 16px; max-width:700px; margin:0 auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <h2 style="margin:0;font-size:18px;">President Dashboard</h2>
+        <button id="presBackFromNotifsBtn" class="btn ghost" style="font-size:12px;padding:4px 14px;">← Members</button>
+      </div>
+      <h3 style="margin:0 0 14px;font-size:15px;">Password Reset Requests</h3>
+      ${notifContent}
+    </div>`;
+  }
+
   let chapRows = sortedCodes.map((code, i) => {
     const members = chapters[code];
     const isIndep = code === INDEPENDENT_CODE;
@@ -981,7 +2382,7 @@ function presidentScreen(){
           <td><span style="background:#FDEAEA;color:#C94F4F;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;">${stamps} stamp${stamps!==1?'s':''}</span></td>
           <td><span style="background:#FFF8E1;color:#A07000;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;">${badges} badge${badges!==1?'s':''}</span></td>
           <td style="white-space:nowrap;">
-            <button class="pres-reset-btn" data-chapter="${escapeHtml(code)}" data-id="${escapeHtml(m.studentId||'')}" data-name="${escapeHtml(m.name||'')}" style="background:none;border:1px solid #EDE8E0;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:inherit;color:#8B7E6B;margin-right:4px;">Reset progress</button>
+            <button class="pres-resetpw-btn" data-chapter="${escapeHtml(code)}" data-id="${escapeHtml(m.studentId||'')}" data-name="${escapeHtml(m.name||'')}" style="background:none;border:1px solid #C8B8E8;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:inherit;color:#7B5EA7;margin-right:4px;">Reset password</button><button class="pres-reset-btn" data-chapter="${escapeHtml(code)}" data-id="${escapeHtml(m.studentId||'')}" data-name="${escapeHtml(m.name||'')}" style="background:none;border:1px solid #EDE8E0;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:inherit;color:#8B7E6B;margin-right:4px;">Reset progress</button>
             <button class="pres-remove-btn" data-chapter="${escapeHtml(code)}" data-id="${escapeHtml(m.studentId||'')}" data-name="${escapeHtml(m.name||'')}" style="background:none;border:1px solid #FDEAEA;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:inherit;color:#C94F4F;">Remove</button>
           </td>
         </tr>`;
@@ -1025,6 +2426,7 @@ function presidentScreen(){
         <div style="font-size:11px;opacity:.75;margin-top:1px;">Teen Wellness Society</div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
+        <button id="presNotifsTabBtn" class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);font-size:13px;padding:7px 16px;">🔔 Notifications</button>
         <button id="presRefreshBtn" class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);font-size:13px;padding:7px 16px;">Refresh</button>
         <button id="presExitBtn" class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);font-size:13px;padding:7px 16px;">Sign out</button>
       </div>
@@ -1056,8 +2458,8 @@ function presidentScreen(){
 
 function presCheckins(profile){
   let c = 0;
-  Object.values(profile.meetings||{}).forEach(m => { c += (m.days||[]).filter(Boolean).length; });
-  (profile.personalHabits||[]).forEach(h => { c += (h.days||[]).filter(Boolean).length; });
+  Object.values(profile.meetings||{}).forEach(m => { c += countDone(m.days||[]); });
+  (profile.personalHabits||[]).forEach(h => { c += countDone(h.days||[]); });
   return c;
 }
 
@@ -1109,6 +2511,9 @@ function attachPresidentHandlers(){
     btn.onclick = () => showRemoveMemberModal(btn.dataset.chapter, btn.dataset.id, btn.dataset.name);
   });
 
+  document.querySelectorAll('.pres-resetpw-btn').forEach(btn => {
+    btn.onclick = () => showResetPasswordModal(btn.dataset.chapter, btn.dataset.id, btn.dataset.name);
+  });
   document.querySelectorAll('.pres-reset-btn').forEach(btn => {
     btn.onclick = () => showResetMemberModal(btn.dataset.chapter, btn.dataset.id, btn.dataset.name);
   });
@@ -1166,6 +2571,31 @@ async function showRemoveMemberModal(chapterCode, studentId, name){
     } else {
       msg.innerHTML = '<div class="msg err">Could not remove. Try again.</div>';
     }
+  };
+}
+
+async function showResetPasswordModal(chapterCode, studentId, name){
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h3 style="margin-top:0;">Reset ${escapeHtml(name)}'s password?</h3>
+      <p style="font-size:13px;color:#8B7E6B;">Their password will be reset to their username (<strong>${escapeHtml(studentId)}</strong>). They can log in with that and choose a new password.</p>
+      <button class="btn teal full" id="confirmResetPwBtn">Yes, reset password</button>
+      <div id="resetPwMsg"></div>
+      <button class="btn ghost full" id="cancelResetPwBtn" style="margin-top:8px;">Cancel</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  document.getElementById('cancelResetPwBtn').onclick = () => overlay.remove();
+  document.getElementById('confirmResetPwBtn').onclick = async () => {
+    const msg = document.getElementById('resetPwMsg');
+    msg.innerHTML = '<div class="msg" style="color:#8B7E6B;font-size:13px;">Resetting...</div>';
+    const profile = await loadProfile(chapterCode, studentId);
+    if(!profile){ msg.innerHTML = '<div class="msg err">Could not find member.</div>'; return; }
+    profile.password = studentId; // temp password = their username
+    await saveProfile(profile);
+    msg.innerHTML = '<div class="msg ok">Password reset. They can log in with their username as the temporary password.</div>';
+    setTimeout(() => overlay.remove(), 2200);
   };
 }
 
